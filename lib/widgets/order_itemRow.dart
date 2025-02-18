@@ -4,10 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/enums.dart';
 import 'package:unavu_villa_project/models/orderItem.dart';
+import 'package:unavu_villa_project/models/order_list_response_model.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
 
 class OrderItemRow extends StatelessWidget {
-  final OrderItem item;
+  final Items1 item;
   final String orderId;
   final int index;
   final Function(String, int) onMarkDelivered;
@@ -31,7 +32,7 @@ class OrderItemRow extends StatelessWidget {
     double iconSize = isMobile ? 24.0 : 36.0;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: 8.0,top: 6),
+      padding: EdgeInsets.only(bottom: 8.0, top: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -46,7 +47,7 @@ class OrderItemRow extends StatelessWidget {
           SizedBox(width: 16.0),
           Expanded(
             child: Text(
-              item.name,
+              item.itemname!,
               style: GoogleFonts.dmSans(
                 color: Colors.black,
                 fontWeight: FontWeight.w400,
@@ -57,12 +58,12 @@ class OrderItemRow extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(right: 16.0),
             child: Icon(
-              item.isDelivered ? Icons.check_circle : Icons.cancel,
-              color: item.isDelivered ? AppColors.green : AppColors.red,
+              item.status == 1 ? Icons.check_circle : Icons.cancel,
+              color: item.status == 1 ? AppColors.green : AppColors.red,
               size: iconSize,
             ),
           ),
-          if (!item.isDelivered)
+          if (item.status != 1)
             IconButton(
               icon: Icon(Icons.check, color: AppColors.green),
               onPressed: () => onMarkDelivered(orderId, index),

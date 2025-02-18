@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:unavu_villa_project/core/app_colors.dart';
+import 'package:unavu_villa_project/shared/shared_functions.dart';
 import 'package:unavu_villa_project/view/addOrder_page.dart';
 import 'package:unavu_villa_project/viewmodels/add_orderButton_Controller.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
@@ -98,26 +99,28 @@ class DashboardView extends StatelessWidget {
                 ],
               ),
             ),
-            Flexible(
-              child: Obx(() {
-                final orders = controller.allOrders;
-                return orders.isEmpty
-                    ? Center(child: Text("No Orders Available"))
-                    : GridView.builder(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: isMobile ? 1 : 2,
-                            crossAxisSpacing: 16,
-                            mainAxisSpacing: 16,
-                            childAspectRatio: 5.9 / 6.1),
-                        itemCount: orders.length,
-                        itemBuilder: (context, index) {
-                          return OrderCard(order: orders[index]);
-                        },
-                      );
-              }),
-            )
+            Obx(() => controller.isLoading.value
+                ? blackLoader()
+                : Flexible(
+                    child: controller.orderList.data!.items!.isEmpty
+                        ? Center(child: Text("No Orders Available"))
+                        : GridView.builder(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: isMobile ? 1 : 2,
+                                    crossAxisSpacing: 16,
+                                    mainAxisSpacing: 16,
+                                    childAspectRatio: 5.9 / 6.1),
+                            itemCount: controller.orderList.data!.items!.length,
+                            itemBuilder: (context, index) {
+                              return OrderCard(
+                                  order:
+                                      controller.orderList.data!.items![index]);
+                            },
+                          ),
+                  ))
           ],
         ),
       ),

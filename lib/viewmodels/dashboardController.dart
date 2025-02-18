@@ -22,6 +22,7 @@ class DashboardController extends GetxController {
       ['All', 'Chicken', 'Seafood', 'Pasta', 'Rice bowl'];
   @override
   void onInit() {
+    debugPrint("initState workss");
     super.onInit();
     fetchAllOrders();
     ever(deviceType, (_) => update());
@@ -31,6 +32,7 @@ class DashboardController extends GetxController {
     await dashboardProvider.fetchOrderList().then((val) {
       if (val.status == true) {
         orderList = val;
+        debugPrint("theee resposs : ${orderList.toJson()}");
         isLoading(false);
       } else {
         isLoading(true);
