@@ -5,7 +5,9 @@ import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/app_icon.dart';
 import 'package:unavu_villa_project/core/app_textstyle.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
+import 'package:unavu_villa_project/models/getMenuItem.dart';
 import 'package:unavu_villa_project/models/menuItem.dart';
+import 'package:unavu_villa_project/models/menu_catagory_list_%20model.dart';
 import 'package:unavu_villa_project/viewmodels/add_orderButton_Controller.dart';
 import 'package:unavu_villa_project/viewmodels/menuController.dart';
 import 'package:unavu_villa_project/widgets/dashboard_appbar.dart';
@@ -204,11 +206,19 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
               children: [
                 // Ensure the menu has a fixed width
                 SizedBox(
-                  width: isMobile
-                      ? 60
-                      : AppDimensions.screenWidth / 8, // Responsive width
-                  child: sideMenuWidget(),
-                ),
+                    width: isMobile
+                        ? 60
+                        : AppDimensions.screenWidth / 8, // Responsive width
+                    child: Obx(() {
+                      if (menuController.isLoading.value) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      if (menuController.menuCatagoryItem.isEmpty) {
+                        return Center(child: Text("No items"));
+                      }
+
+                      return sideMenuWidget(menuController.menuCatagoryItem);
+                    })),
                 // Main content section
                 Expanded(
                   child: Column(
@@ -227,23 +237,32 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                       ),
                       // Suggestion Menu List
                       Expanded(
-                        child: Obx(
-                          () => GridView.builder(
+                        child: Obx(() {
+                          if (menuController.isLoading.value) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (menuController.menuItems.isEmpty) {
+                            return Center(child: Text("No items available"));
+                          }
+
+                          return GridView.builder(
                             shrinkWrap: true,
+                            physics:
+                                ClampingScrollPhysics(), // Prevent scrolling if inside a scrollable widget
                             itemCount: menuController.menuItems.length,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: isMobile ? 1 : 2,
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
-                              childAspectRatio: 6 / 6.1,
+                              childAspectRatio: 1, // Adjust this value
                             ),
                             itemBuilder: (context, index) {
                               var item = menuController.menuItems[index];
                               return MenuItemCard(item: item);
                             },
-                          ),
-                        ),
+                          );
+                        }),
                       ),
                     ],
                   ),
@@ -360,7 +379,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               image: DecorationImage(
-                image: AssetImage(item.imageUrl),
+                image: AssetImage(AppIcons.productImage),
                 fit: BoxFit.cover,
               ),
             ),
@@ -372,7 +391,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.title,
+                Text(item.itemname,
                     style: GoogleFonts.dmSans(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -385,7 +404,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
                         color: AppColors.textFiled)),
-                Text("\$${item.price.toStringAsFixed(2)}",
+                Text("\$${item.price}",
                     style: GoogleFonts.dmSans(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -453,55 +472,26 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
     );
   }
 
-  Container sideMenuWidget() {
+  Container sideMenuWidget(List<MenuCategory> menuCategory) {
     return Container(
-      padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: AppColors.cardBackground,
-        border: Border(right: BorderSide(color: AppColors.borderclr)),
-      ),
-      child: Column(
-        // spacing: 24,
-        children: [
-          SizedBox(height: 5),
-          CategoryIcon(
-            icon: AppIcons.coffeeeIcon,
-            text: 'Coffee',
-            selected: selectedCategory == 'Coffee',
-            onTap: () => _onCategorySelected('Coffee'),
-          ),
-          CategoryIcon(
-            icon: AppIcons.beverageIcon,
-            text: 'Beverages',
-            selected: selectedCategory == 'Beverages',
-            onTap: () => _onCategorySelected('Beverages'),
-          ),
-          CategoryIcon(
-            icon: AppIcons.foodIcon,
-            text: 'Food',
-            selected: selectedCategory == 'Food',
-            onTap: () => _onCategorySelected('Food'),
-          ),
-          CategoryIcon(
-            icon: AppIcons.appetizer,
-            text: 'Appetizer',
-            selected: selectedCategory == 'Appetizer',
-            onTap: () => _onCategorySelected('Appetizer'),
-          ),
-          CategoryIcon(
-            icon: AppIcons.breadicon,
-            text: 'Bread',
-            selected: selectedCategory == 'Bread',
-            onTap: () => _onCategorySelected('Bread'),
-          ),
-          CategoryIcon(
-            icon: AppIcons.snackicon,
-            text: 'Snack',
-            selected: selectedCategory == 'Snack',
-            onTap: () => _onCategorySelected('Snack'),
-          ),
-        ],
-      ),
-    );
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.cardBackground,
+          border: Border(right: BorderSide(color: AppColors.borderclr)),
+        ),
+        child: ListView.separated(
+          padding: EdgeInsets.all(8), // Optional: Add padding around the list
+          itemCount: menuCategory.length,
+          separatorBuilder: (context, index) =>
+              SizedBox(height: 10), // Space between items
+          itemBuilder: (context, index) {
+            final category = menuCategory[index];
+            return CategoryIcon(
+              text: category.name,
+              selected: selectedCategory == category.name,
+              onTap: () => _onCategorySelected(category.name),
+            );
+          },
+        ));
   }
 }

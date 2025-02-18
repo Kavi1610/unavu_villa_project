@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:unavu_villa_project/core/app_icon.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
+import 'package:unavu_villa_project/models/getMenuItem.dart';
 import 'package:unavu_villa_project/models/menuItem.dart';
 import 'package:unavu_villa_project/viewmodels/menuController.dart';
 
@@ -19,7 +21,7 @@ class MenuItemCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.asset(item.imageUrl,
+            child: Image.asset(AppIcons.productImage,
                 height: AppDimensions.screenHeight / 9,
                 fit: BoxFit.cover,
                 width: double.infinity),
@@ -33,18 +35,22 @@ class MenuItemCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      item.title,
-                      style: GoogleFonts.dmSans(
+                    SizedBox(
+                      width: AppDimensions.screenWidth / 4.9,
+                      child: Text(
+                        item.itemname,
+                        style: GoogleFonts.dmSans(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black),
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                     SizedBox(height: 5),
                     Row(
                       children: [
                         Text(
-                          "\$${item.price.toStringAsFixed(2)}",
+                          "\₹.${item.price}",
                           style: GoogleFonts.dmSans(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -52,16 +58,16 @@ class MenuItemCard extends StatelessWidget {
                         ),
                         SizedBox(width: 8),
                         Icon(Icons.circle,
-                            color: item.isVeg
+                            color: item.itemtype == 'V'
                                 ? Color(0XFF20F639)
                                 : Color(0XFFF62020),
                             size: 10),
                         Text(
-                          item.isVeg ? " Veg" : " Non Veg",
+                          item.itemtype == 'V' ? " Veg" : " Non Veg",
                           style: GoogleFonts.dmSans(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: item.isVeg
+                            color: item.itemtype == 'V'
                                 ? Color(0XFF20F639)
                                 : Color(0XFFF62020),
                           ),

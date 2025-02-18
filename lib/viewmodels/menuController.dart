@@ -1,16 +1,22 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:unavu_villa_project/core/app_icon.dart';
+import 'package:unavu_villa_project/models/getMenuItem.dart';
 import 'package:unavu_villa_project/models/menuItem.dart';
+import 'package:unavu_villa_project/models/menu_catagory_list_%20model.dart';
+import 'package:unavu_villa_project/provider/getMenuProvider.dart';
+import 'package:unavu_villa_project/provider/get_menu_item_provider.dart';
 
 class FoodMenuController extends GetxController {
   var menuItems = <MenuItem>[].obs;
   var cartItems = <MenuItem>[].obs;
+  var menuCatagoryItem = <MenuCategory>[].obs;
   var itemQuantities = <MenuItem, int>{}.obs;
   var takeOrder = false.obs;
+  var isLoading = true.obs;
 
   double get subTotal => cartItems.fold(
-      0, (sum, item) => sum + (item.price * (itemQuantities[item] ?? 1)));
+      0,
+      (sum, item) =>
+          sum + (int.parse(item.price) * (itemQuantities[item] ?? 1)));
 
   double get tax => subTotal * 0.10; // 10% GST
   double get roundOff => (subTotal + tax) - (subTotal + tax).floor();
@@ -51,46 +57,32 @@ class FoodMenuController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    print("Laod started");
     loadMenuItems();
+    loadCatMenuItems();
   }
 
-  void loadMenuItems() {
-    menuItems.addAll([
-      MenuItem(
-          title: "Grill Sandwich",
-          imageUrl: AppIcons.productImage,
-          price: 30.00,
-          isVeg: true),
-      MenuItem(
-          title: "Chicken Burger",
-          imageUrl: AppIcons.productImage,
-          price: 50.00,
-          isVeg: false),
-      MenuItem(
-          title: "Paneer Wrap",
-          imageUrl: AppIcons.productImage,
-          price: 40.00,
-          isVeg: true),
-      MenuItem(
-          title: "Cheese Pizza",
-          imageUrl: AppIcons.productImage,
-          price: 80.00,
-          isVeg: true),
-      MenuItem(
-          title: "Chicken Pizza",
-          imageUrl: AppIcons.productImage,
-          price: 90.00,
-          isVeg: false),
-      MenuItem(
-          title: "Veg Biryani",
-          imageUrl: AppIcons.productImage,
-          price: 70.00,
-          isVeg: true),
-      MenuItem(
-          title: "Chicken Biryani",
-          imageUrl: AppIcons.productImage,
-          price: 120.00,
-          isVeg: false),
-    ]);
+  void loadMenuItems() async {
+    try {
+      isLoading.value = true;
+      final fetchedItems = await MenuService().fetchMenuItems();
+      menuItems.addAll(fetchedItems);
+    } catch (e) {
+      Get.snackbar("Error", "Failed to load menu items: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void loadCatMenuItems() async {
+    try {
+      isLoading.value = true;
+      final fetchedItems = await MenuCategoryList().fetchMenuCategories();
+      menuCatagoryItem.addAll(fetchedItems);
+    } catch (e) {
+      Get.snackbar("Error", "Failed to load menu items: $e");
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

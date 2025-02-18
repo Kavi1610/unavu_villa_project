@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:unavu_villa_project/core/app_colors.dart';
+import 'package:unavu_villa_project/core/app_icon.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
+import 'package:unavu_villa_project/models/getMenuItem.dart';
 import 'package:unavu_villa_project/models/menuItem.dart';
 import 'package:unavu_villa_project/viewmodels/menuController.dart';
 
@@ -407,7 +409,7 @@ class CartItem extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
-                image: AssetImage(item.imageUrl),
+                image: AssetImage(AppIcons.productImage),
                 fit: BoxFit.cover,
               ),
             ),
@@ -419,7 +421,7 @@ class CartItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.title,
+                Text(item.itemname,
                     style: GoogleFonts.dmSans(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -431,7 +433,7 @@ class CartItem extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         color: AppColors.textFiled)),
                 Obx(() => Text(
-                      "\$${(item.price * (menuController.itemQuantities[item] ?? 1)).toStringAsFixed(2)}",
+                      "\$${(item.price * (menuController.itemQuantities[item] ?? 1))}",
                       style: GoogleFonts.dmSans(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,

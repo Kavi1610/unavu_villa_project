@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:unavu_villa_project/data/repository/auth_repostiory.dart';
 import 'package:unavu_villa_project/models/loginModel.dart';
+import 'package:unavu_villa_project/provider/auth_provider.dart';
+import 'package:unavu_villa_project/shared/shared_functions.dart';
 
 class LoginViewModel extends GetxController {
   var usernameController = ''.obs;
@@ -16,32 +18,21 @@ class LoginViewModel extends GetxController {
   Future<void> login() async {
     isLoading.value = true;
     Get.toNamed('/dashboard');
-    // UserModel loginRequest = UserModel(
-    //     username: usernameController.value, password: passwordController.value);
-    // await authRepo.doLogin(request: loginRequest).then((val) {
-    //   if (val.status == true) {
-    //     isLoading.value = false;
-    //     toastify(1, "Login Succesfully");
-    //   } else {
-    //     toastify(0, val.message!);
-    //   }
-    // }).catchError((e) {
-    //   toastify(0, e.toString());
-    // });
-    // bool success = await authRepo.login(
-    //   UserModel(
-    //       username: usernameController.value,
-    //       password: passwordController.value),
-    // );
+    UserModel loginRequest = UserModel(
+        username: usernameController.value, password: passwordController.value);
 
-    // isLoading.value = false;
-    // Get.toNamed('/dashboard');
-    // if (success) {
-    //   Get.snackbar("Success", "Login Successful",
-    //       snackPosition: SnackPosition.BOTTOM);
-    // } else {
-    //   Get.snackbar("Error", "Invalid Credentials",
-    //       snackPosition: SnackPosition.BOTTOM);
-    // }
+    try {
+      final val = await authRepo.doLogin(request: loginRequest);
+      isLoading.value = false; // Move this here
+      if (val.status == true) {
+        toastify(1, "Login Successfully");
+        Get.toNamed('/dashboard');
+      } else {
+        toastify(0, val.message!);
+      }
+    } catch (e) {
+      isLoading.value = false; // Add this line
+      toastify(0, e.toString());
+    }
   }
 }
