@@ -50,7 +50,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
           width: AppDimensions.screenWidth / 2.5,
           child: Column(
             mainAxisSize: MainAxisSize.max,
-            spacing: 20,
+            // spacing: 20,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -461,7 +461,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
         border: Border(right: BorderSide(color: AppColors.borderclr)),
       ),
       child: Column(
-        spacing: 24,
+        // spacing: 24,
         children: [
           SizedBox(height: 5),
           CategoryIcon(
