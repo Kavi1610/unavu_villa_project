@@ -7,21 +7,27 @@ class LoginViewModel extends GetxController {
   var passwordController = ''.obs;
   var isLoading = false.obs;
 
+  var selectedRole = 'User'.obs; // Default role
+  var selectedBranch = 'New York'.obs; // Default branch
+
   final AuthRepository authRepository = AuthRepository();
 
   Future<void> login() async {
     isLoading.value = true;
+
     bool success = await authRepository.login(
       UserModel(
-          username: usernameController.value,
-          password: passwordController.value),
+        username: usernameController.value,
+        password: passwordController.value,
+      ),
     );
 
     isLoading.value = false;
-    Get.toNamed('/dashboard');
+
     if (success) {
       Get.snackbar("Success", "Login Successful",
           snackPosition: SnackPosition.BOTTOM);
+      Get.toNamed('/dashboard');
     } else {
       Get.snackbar("Error", "Invalid Credentials",
           snackPosition: SnackPosition.BOTTOM);

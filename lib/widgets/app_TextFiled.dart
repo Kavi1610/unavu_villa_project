@@ -34,27 +34,27 @@ class CustomTextField extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 14),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(58),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: AppColors.textFiled, width: 1),
           ),
           disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(58),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: AppColors.textFiled, width: 1),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(58),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: AppColors.textFiled, width: 1),
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(58),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: AppColors.textFiled, width: 1),
           ),
           errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(58),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: AppColors.errorText, width: 1),
           ),
           focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(58),
+            borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: AppColors.errorText, width: 1),
           ),
           contentPadding:

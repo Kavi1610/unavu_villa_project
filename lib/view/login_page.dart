@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/app_textstyle.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
@@ -59,6 +60,104 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
+
+                  // --------- First Drop-down -----------
+                  Text(
+                    "Select Role",
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.subheading1
+                        .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 8),
+                  Obx(() => DropdownButtonFormField<String>(
+                        value: controller.selectedRole.value,
+                        style: GoogleFonts.dmSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 14),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                              borderRadius: BorderRadius.circular(12)),
+                          errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.errorText, width: 1),
+                              borderRadius: BorderRadius.circular(12)),
+                          disabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                              borderRadius: BorderRadius.circular(12)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                              borderRadius: BorderRadius.circular(12)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                        items: ["Admin", "User", "Guest"]
+                            .map((role) => DropdownMenuItem(
+                                value: role, child: Text(role)))
+                            .toList(),
+                        onChanged: (value) {
+                          controller.selectedRole.value = value!;
+                        },
+                      )),
+                  const SizedBox(height: 16),
+
+                  // --------- Second Drop-down -----------
+                  Text(
+                    "Select Branch",
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.subheading1
+                        .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 8),
+                  Obx(() => DropdownButtonFormField<String>(
+                        style: GoogleFonts.dmSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black),
+                        value: controller.selectedBranch.value,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                              borderRadius: BorderRadius.circular(12)),
+                          errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.errorText, width: 1),
+                              borderRadius: BorderRadius.circular(12)),
+                          disabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                              borderRadius: BorderRadius.circular(12)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                              borderRadius: BorderRadius.circular(12)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                        items: ["New York", "Los Angeles", "Chicago"]
+                            .map((branch) => DropdownMenuItem(
+                                value: branch, child: Text(branch)))
+                            .toList(),
+                        onChanged: (value) {
+                          controller.selectedBranch.value = value!;
+                        },
+                      )),
+                  const SizedBox(height: 16),
+
+                  // -------- Username Field --------
                   Text(
                     "Username",
                     textAlign: TextAlign.center,
@@ -77,6 +176,8 @@ class LoginPage extends StatelessWidget {
                         controller.usernameController.value = value,
                   ),
                   const SizedBox(height: 16),
+
+                  // -------- Password Field --------
                   Text(
                     "Password",
                     textAlign: TextAlign.center,
@@ -96,6 +197,7 @@ class LoginPage extends StatelessWidget {
                         controller.passwordController.value = value,
                   ),
                   const SizedBox(height: 16),
+
                   Align(
                     alignment: Alignment.centerLeft,
                     child: TextButton(
@@ -105,6 +207,8 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
+
+                  // --------- Login Button -----------
                   Obx(() => ElevatedButton(
                         onPressed: controller.isLoading.value
                             ? null
@@ -122,12 +226,13 @@ class LoginPage extends StatelessWidget {
                             : Text("Login Now", style: AppTextStyles.button),
                       )),
                   const SizedBox(height: 56),
+
                   Center(
                       child: Text("Made in India", style: AppTextStyles.body)),
                 ],
               ),
             ),
-          ),
+          )
         ],
       ),
     );
