@@ -36,7 +36,7 @@ class CategoryIcon extends StatelessWidget {
         ),
         child: Center(
           child: Column(
-            spacing: 10,
+            // spacing: 10,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

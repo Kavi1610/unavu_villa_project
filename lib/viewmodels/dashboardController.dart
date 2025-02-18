@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unavu_villa_project/core/enums.dart';
 import 'package:unavu_villa_project/models/orderDetaul.dart';
+import 'package:unavu_villa_project/models/order_list_response_model.dart';
+import 'package:unavu_villa_project/provider/dashboard_provider.dart';
 import 'package:unavu_villa_project/viewmodels/orderController.dart';
 
 class DashboardController extends GetxController {
@@ -11,7 +13,9 @@ class DashboardController extends GetxController {
   RxInt selectedTabIndex = 0.obs;
   RxInt selectedFilterIndex = 0.obs;
   Rx<DeviceType> deviceType = DeviceType.tablet.obs;
-
+  DashboardProvider dashboardProvider = DashboardProvider();
+  OrderListResponse orderList = OrderListResponse();
+  RxBool isLoading = true.obs;
   List<String> get filterOptions =>
       ['All', 'Dine In', 'Takeaway', 'Room Service', 'Delivery'];
   List<String> get filterOrderScreen =>
@@ -19,7 +23,19 @@ class DashboardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    fetchAllOrders();
     ever(deviceType, (_) => update());
+  }
+
+  fetchAllOrders() async {
+    await dashboardProvider.fetchOrderList().then((val) {
+      if (val.status == true) {
+        orderList = val;
+        isLoading(false);
+      } else {
+        isLoading(true);
+      }
+    });
   }
 
   void updateDeviceType(BuildContext context) {

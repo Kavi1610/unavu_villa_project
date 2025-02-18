@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,7 +15,7 @@ import 'package:unavu_villa_project/widgets/bottom_bar.dart';
 import 'package:unavu_villa_project/core/enums.dart' as core;
 
 class DashboardView extends StatelessWidget {
-  DashboardView({Key? key}) : super(key: key);
+  DashboardView({super.key});
   final DashboardController controller = Get.put(DashboardController());
   ButtonController buttonController = Get.put(ButtonController());
   @override
