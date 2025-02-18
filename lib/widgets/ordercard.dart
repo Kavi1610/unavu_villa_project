@@ -3,12 +3,14 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/enums.dart';
+import 'package:unavu_villa_project/models/order_list_response_model.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
 import 'package:unavu_villa_project/widgets/order_itemRow.dart';
 import '../models/orderDetaul.dart';
+import 'package:jiffy/jiffy.dart';
 
 class OrderCard extends StatelessWidget {
-  final Order order;
+  final Items order;
 
   OrderCard({Key? key, required this.order}) : super(key: key);
 
@@ -40,7 +42,11 @@ class OrderCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(padding),
                   decoration: BoxDecoration(
-                    color: order.statusColor,
+                    color: order.status == 0
+                        ? Colors.amber
+                        : (order.status == 1 || order.status == 4)
+                            ? Colors.green
+                            : Colors.red,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(4),
                       topRight: Radius.circular(4),
@@ -57,11 +63,15 @@ class OrderCard extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            '${order.tableNumber}',
+                            '${order.tableid ?? ""}',
                             style: GoogleFonts.dmSans(
                               fontSize: fontSizeHeader,
                               fontWeight: FontWeight.w500,
-                              color: order.statusColor,
+                              color: order.status == 0
+                                  ? Colors.amber
+                                  : (order.status == 1 || order.status == 4)
+                                      ? Colors.green
+                                      : Colors.red,
                             ),
                           ),
                         ),
@@ -92,7 +102,9 @@ class OrderCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        order.formattedDate,
+                        Jiffy.parse(order.createdAt!,
+                                pattern: "yyyy-MM-ddThh:mm:ssZ")
+                            .format(pattern: "dd/MM/yyyy"),
                         style: GoogleFonts.dmSans(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
@@ -107,7 +119,7 @@ class OrderCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        'From: ${order.formattedStartTime}',
+                        'From: ${Jiffy.parse(order.createdAt!, pattern: "yyyy-MM-ddThh:mm:ssZ").format(pattern: "hh:mm a")}',
                         style: GoogleFonts.dmSans(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
@@ -116,7 +128,7 @@ class OrderCard extends StatelessWidget {
                       ),
                       Spacer(),
                       Text(
-                        'To: ${order.formattedEndTime}',
+                        'To: ${Jiffy.parse(order.createdAt!, pattern: "yyyy-MM-ddThh:mm:ssZ").format(pattern: "hh:mm a")}',
                         style: GoogleFonts.dmSans(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
@@ -170,10 +182,10 @@ class OrderCard extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: screenHeight * 0.004),
-                      ...order.items.map((item) => OrderItemRow(
+                      ...order.items!.map((item) => OrderItemRow(
                             item: item,
-                            orderId: order.id,
-                            index: order.items.indexOf(item),
+                            orderId: item.id.toString(),
+                            index: order.items!.indexOf(item),
                             onMarkDelivered: controller.markItemAsDelivered,
                           )),
                     ],
@@ -190,13 +202,18 @@ class OrderCard extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: InkWell(
-                                  onTap: () => controller.cancelOrder(order.id),
+                                  onTap: () => controller
+                                      .cancelOrder(order.id.toString()),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         vertical: isMobile ? 12 : 16),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      color: order.statusColor,
+                                      color: order.status == 1
+                                          ? Colors.green
+                                          : order.status == 2
+                                              ? Colors.amber
+                                              : Colors.red,
                                     ),
                                     child: Center(
                                       child: Text(
@@ -214,7 +231,8 @@ class OrderCard extends StatelessWidget {
                               SizedBox(width: screenWidth * 0.02),
                               Expanded(
                                 child: InkWell(
-                                  onTap: () => controller.cancelOrder(order.id),
+                                  onTap: () => controller
+                                      .cancelOrder(order.id!.toString()),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         vertical: isMobile ? 12 : 16),
@@ -237,10 +255,11 @@ class OrderCard extends StatelessWidget {
                               ),
                             ],
                           )
-                        : order.status == OrderStatus.cancelled
+                        : order.status == 2
                             ? Expanded(
                                 child: InkWell(
-                                  onTap: () => controller.cancelOrder(order.id),
+                                  onTap: () => controller
+                                      .cancelOrder(order.id!.toString()),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         vertical: isMobile ? 12 : 21),
@@ -263,7 +282,8 @@ class OrderCard extends StatelessWidget {
                               )
                             : Expanded(
                                 child: InkWell(
-                                  onTap: () => controller.cancelOrder(order.id),
+                                  onTap: () => controller
+                                      .cancelOrder(order.id!.toString()),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         vertical: isMobile ? 12 : 21),

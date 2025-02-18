@@ -10,8 +10,8 @@ class DashboardProvider extends BaseProvider {
       await fetchToken().then((val) {
         token = val;
       });
-      final response =
-          await get(ApiEndpoints.createUser, headers: {"Authorization": token});
+      final response = await get(ApiEndpoints.allOrders,
+          headers: {"Authorization": "Bearer $token"});
       if (response.hasError) {
         return Future.error("Something Went Wrong");
       } else {
