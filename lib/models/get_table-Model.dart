@@ -47,45 +47,49 @@ class Data {
 }
 
 class TableItem {
-  final int id;
-  final int branchId;
-  final String tableId;
-  final String tableType;
-  final int floorId;
-  final bool status;
-  final int headCount;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final int? id; // Nullable
+  final int? branchId; // Nullable
+  final String? tableId; // Nullable
+  final String? tableType; // Nullable
+  final int? floorId; // Nullable
+  final bool? status; // Nullable
+  final int? headCount; // Nullable
+  final DateTime? createdAt; // Nullable
+  final DateTime? updatedAt; // Nullable
   final dynamic deletedAt; // Can be null
-  final bool isDeleted;
+  final bool? isDeleted; // Nullable
 
   TableItem({
-    required this.id,
-    required this.branchId,
-    required this.tableId,
-    required this.tableType,
-    required this.floorId,
-    required this.status,
-    required this.headCount,
-    required this.createdAt,
-    required this.updatedAt,
-    this.deletedAt,
-    required this.isDeleted,
+    this.id, // Nullable
+    this.branchId, // Nullable
+    this.tableId, // Nullable
+    this.tableType, // Nullable
+    this.floorId, // Nullable
+    this.status, // Nullable
+    this.headCount, // Nullable
+    this.createdAt, // Nullable
+    this.updatedAt, // Nullable
+    this.deletedAt, // Can be null
+    this.isDeleted, // Nullable
   });
 
   factory TableItem.fromJson(Map<String, dynamic> json) {
     return TableItem(
-      id: json['id'],
-      branchId: json['branchid'],
-      tableId: json['tableid'],
-      tableType: json['tabletype'],
-      floorId: json['floorid'],
-      status: json['status'],
-      headCount: json['headcount'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      id: json['id'], // Nullable
+      branchId: json['branchid'], // Nullable
+      tableId: json['tableid'], // Nullable
+      tableType: json['tabletype'], // Nullable
+      floorId: json['floorid'], // Nullable
+      status: json['status'], // Nullable
+      headCount: json['headcount'], // Nullable
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : null, // Nullable
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : null, // Nullable
       deletedAt: json['deleted_at'], // This can be null
-      isDeleted: json['is_deleted'],
+      isDeleted: json['is_deleted'], // Nullable
     );
   }
 }

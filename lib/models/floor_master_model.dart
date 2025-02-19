@@ -46,33 +46,39 @@ class Data {
 }
 
 class Item {
-  final int id;
-  final String floorname;
-  final List<int> departmentsid;
-  final bool status;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final bool isDeleted;
+  final int? id; // Nullable
+  final String? floorname; // Nullable
+  final List<int>? departmentsid; // Nullable
+  final bool? status; // Nullable
+  final DateTime? createdAt; // Nullable
+  final DateTime? updatedAt; // Nullable
+  final bool? isDeleted; // Nullable
 
   Item({
-    required this.id,
-    required this.floorname,
-    required this.departmentsid,
-    required this.status,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.isDeleted,
+    this.id, // Nullable
+    this.floorname, // Nullable
+    this.departmentsid, // Nullable
+    this.status, // Nullable
+    this.createdAt, // Nullable
+    this.updatedAt, // Nullable
+    this.isDeleted, // Nullable
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
-      id: json['id'],
-      floorname: json['floorname'],
-      departmentsid: List<int>.from(json['departmentsid']),
-      status: json['status'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
-      isDeleted: json['is_deleted'],
+      id: json['id'], // Nullable
+      floorname: json['floorname'], // Nullable
+      departmentsid: json['departmentsid'] != null
+          ? List<int>.from(json['departmentsid'])
+          : null, // Nullable
+      status: json['status'], // Nullable
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : null, // Nullable
+      updatedAt: json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : null, // Nullable
+      isDeleted: json['is_deleted'], // Nullable
     );
   }
 }

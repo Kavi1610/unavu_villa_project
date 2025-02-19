@@ -160,40 +160,48 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                           color: Color(0XFFC2C2C2),
                         ),
                       ),
-                      value: menuController.selectTable.value.isEmpty
+                      // Ensure selectedTableId is used, since item.id is stored in items
+                      value: menuController.selectTableId.value.isEmpty
                           ? null
-                          : menuController.selectTable.value, // Corrected value
+                          : menuController.selectTableId.value,
+
                       isExpanded: true,
                       icon: Icon(Icons.arrow_forward_ios, size: 16),
                       underline: SizedBox(),
                       dropdownColor: Colors.white,
-                      // Assuming Item has a property called floorname
+
                       items: menuController.BranchtableDataList.map<
                           DropdownMenuItem<String>>((TableItem item) {
                         return DropdownMenuItem<String>(
-                          value: item.tableId, // Use the floorname property
-                          child: Text(item.tableId, // Display the floorname
-                              style: AppTextStyles.heading.copyWith(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.black,
-                              )),
+                          value: item.id.toString(), // Store ID as value
+                          child: Text(
+                            item.tableId ?? "Unknown", // Display tableId
+                            style: AppTextStyles.heading.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black,
+                            ),
+                          ),
                         );
                       }).toList(),
+
                       onChanged: (String? newValue) {
                         if (newValue != null) {
-                          // Find the corresponding floorname from the list
+                          // Find the item by ID
                           final selectedItem =
                               menuController.BranchtableDataList.firstWhere(
-                            (item) => item.id == newValue,
-                            // Default empty item
+                            (item) => item.id.toString() == newValue,
+                            orElse: () => TableItem(
+                                id: 0,
+                                tableId: ""), // Fallback with empty values
                           );
 
-                          // Store only the ID and update UI based on floorname
-                          menuController.selectTableId.value =
-                              newValue; // Store ID
-                          menuController.selectTable.value =
-                              selectedItem.tableId; // Store floorname
+                          if (selectedItem.id != 0) {
+                            menuController.selectTableId.value =
+                                newValue; // Store ID
+                            menuController.selectTable.value =
+                                selectedItem.tableId ?? ""; // Store tableId
+                          }
                         }
                       },
                     ),

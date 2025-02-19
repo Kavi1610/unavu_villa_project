@@ -10,8 +10,6 @@ class AppSearchBar extends StatelessWidget {
 
   final DashboardController controller = Get.find<DashboardController>();
 
-  final DashboardController controller =
-      Get.find<DashboardController>(); // FIXED: Use existing instance
   String selectedFilter = '';
   @override
   Widget build(BuildContext context) {

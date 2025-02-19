@@ -201,10 +201,10 @@ class LoginPage extends StatelessWidget {
                             items: controller.BranchtableDataList.map<
                                 DropdownMenuItem<String>>((Item item) {
                               return DropdownMenuItem<String>(
-                                value: item
-                                    .floorname, // Use the floorname property
+                                value: item.id
+                                    .toString(), // Use the floorname property
                                 child: Text(
-                                    item.floorname, // Display the floorname
+                                    item.floorname!, // Display the floorname
                                     style: AppTextStyles.heading.copyWith(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
@@ -214,18 +214,22 @@ class LoginPage extends StatelessWidget {
                             }).toList(),
                             onChanged: (String? newValue) {
                               if (newValue != null) {
-                                // Find the corresponding floorname from the list
+                                // Find the item by ID
                                 final selectedItem =
                                     controller.BranchtableDataList.firstWhere(
-                                  (item) => item.id == newValue,
-                                  // Default empty item
+                                  (item) => item.id.toString() == newValue,
+                                  orElse: () => Item(
+                                      id: 0,
+                                      floorname:
+                                          ""), // Fallback with empty values
                                 );
 
-                                // Store only the ID and update UI based on floorname
-                                controller.selectedBranchId.value =
-                                    newValue; // Store ID
-                                controller.selectedBranch.value =
-                                    selectedItem.floorname; // Store floorname
+                                if (selectedItem.id != 0) {
+                                  controller.selectedBranchId.value =
+                                      newValue; // Store ID
+                                  controller.selectedBranch.value = selectedItem
+                                      .floorname!; // Store floorname
+                                }
                               }
                             },
                           ),
