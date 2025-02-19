@@ -6,13 +6,13 @@ import 'package:unavu_villa_project/core/app_icon.dart';
 import 'package:unavu_villa_project/core/app_textstyle.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
 import 'package:unavu_villa_project/models/getMenuItem.dart';
+import 'package:unavu_villa_project/models/get_table-Model.dart';
 import 'package:unavu_villa_project/models/menuItem.dart';
 import 'package:unavu_villa_project/models/menu_catagory_list_%20model.dart';
 import 'package:unavu_villa_project/viewmodels/add_orderButton_Controller.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
 import 'package:unavu_villa_project/viewmodels/menuController.dart';
 import 'package:unavu_villa_project/widgets/dashboard_appbar.dart';
-import 'package:unavu_villa_project/widgets/dropdown_widget.dart';
 import 'package:unavu_villa_project/widgets/filterchips.dart';
 import 'package:unavu_villa_project/widgets/menuItemCard.dart';
 import 'package:unavu_villa_project/widgets/menu_button.dart';
@@ -142,24 +142,89 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
               color: Colors.grey.shade400,
             )),
         child: isiconneed
-            ? MyDropdown(
-                title: "Select an option",
-                items: [
-                  "Option 1",
-                  "Option 2",
-                  "Option 3"
-                ], // Your dropdown items
-              )
+            ? Obx(() => Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: AppColors.textFiled, width: 1),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 12, right: 8),
+                    child: DropdownButton<String>(
+                      borderRadius: BorderRadius.circular(24),
+                      hint: Text(
+                        "Select Table",
+                        style: AppTextStyles.heading.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0XFFC2C2C2),
+                        ),
+                      ),
+                      value: menuController.selectTable.value.isEmpty
+                          ? null
+                          : menuController.selectTable.value, // Corrected value
+                      isExpanded: true,
+                      icon: Icon(Icons.arrow_forward_ios, size: 16),
+                      underline: SizedBox(),
+                      dropdownColor: Colors.white,
+                      // Assuming Item has a property called floorname
+                      items: menuController.BranchtableDataList.map<
+                          DropdownMenuItem<String>>((TableItem item) {
+                        return DropdownMenuItem<String>(
+                          value: item.tableId, // Use the floorname property
+                          child: Text(item.tableId, // Display the floorname
+                              style: AppTextStyles.heading.copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black,
+                              )),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          // Find the corresponding floorname from the list
+                          final selectedItem =
+                              menuController.BranchtableDataList.firstWhere(
+                            (item) => item.id == newValue,
+                            // Default empty item
+                          );
+
+                          // Store only the ID and update UI based on floorname
+                          menuController.selectTableId.value =
+                              newValue; // Store ID
+                          menuController.selectTable.value =
+                              selectedItem.tableId; // Store floorname
+                        }
+                      },
+                    ),
+                  ),
+                ))
             : TextField(
+                controller:
+                    TextEditingController(text: menuController.inputText.value),
+                keyboardType: TextInputType.number, // Allow only number input
                 decoration: InputDecoration(
-                  hintText: title,
+                  hintText: "Enter Table  count",
                   hintStyle: AppTextStyles.heading.copyWith(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0XFFC2C2C2)),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0XFFC2C2C2),
+                  ),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(bottom: 8, left: 21),
                 ),
+                onChanged: (value) {
+                  // Try to parse the input to an integer
+                  int? number = int.tryParse(value);
+
+                  // Check if the number is valid and within the range
+                  if (number != null && (number < 1 || number > 10)) {
+                    // Show an alert dialog if the number is out of range
+                    menuController.showAlertDialog();
+                    // Clear the input field
+                    menuController.inputText.value = '';
+                  }
+                }, // Validate input on change
               ));
   }
 
@@ -168,7 +233,10 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
     final bool isMobile =
         MediaQuery.of(context).size.width < 600; // Adjust threshold as needed
     Size screensize = MediaQuery.of(context).size;
+    double screenWidth = MediaQuery.of(context).size.width;
 
+    double height = isMobile ? 50 : 60; // Adjusted for better sizing
+    double iconSize = isMobile ? 20 : 24;
     return Scaffold(
       backgroundColor: AppColors.cardBackground,
       appBar: DashboardAppBar(),
@@ -181,7 +249,47 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
               children: [
                 SizedBox(
                     width: MediaQuery.of(context).size.width / 1.7,
-                    child: AppSearchBar()), // Fixed width for search bar
+                    child: Container(
+                      height: height,
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border(
+                            bottom: BorderSide(color: Colors.grey.shade300),
+                            right: BorderSide(color: Colors.grey.shade300)),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.search,
+                              size: iconSize,
+                              color: Colors.grey), // Replaced Image with Icon
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: 'Search order by number...',
+                                border: InputBorder.none,
+                                hintStyle: GoogleFonts.dmSans(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0XFF9E9E9E),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                menuController.searchQuery.value = value;
+                                if (value.length > 2) {
+                                  menuController.loadFilterMenuSearch(value);
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(Icons.filter_list,
+                              size: iconSize,
+                              color: Colors.grey), // Replaced Image with Icon
+                        ],
+                      ),
+                    )), // Fixed width for search bar
                 Container(
                   height: isMobile ? 50 : 60,
                   decoration: BoxDecoration(
@@ -207,13 +315,6 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                         ? 60
                         : AppDimensions.screenWidth / 8, // Responsive width
                     child: Obx(() {
-                      if (menuController.isLoading.value) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (menuController.menuCatagoryItem.isEmpty) {
-                        return Center(child: Text("No items"));
-                      }
-
                       return sideMenuWidget(menuController.menuCatagoryItem);
                     })),
                 SizedBox(
@@ -501,15 +602,17 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
               SizedBox(height: 6), // Space between items
           itemBuilder: (context, index) {
             final category = menuCategory[index];
-            return CategoryIcon(
-              text: category.name,
-              selected: selectedCategory == category.name,
-              onTap: () {
-                dashcontroller.onCategorySelected(category.name);
-                menuController.loadFilterMenuItems(
-                    dashcontroller.selectedFiltermenu.value, category.name);
-              },
-            );
+            return Obx(() => CategoryIcon(
+                  text: category.name,
+                  selected:
+                      menuController.selectedCategory.value == category.name,
+                  onTap: () {
+                    dashcontroller.onCategorySelected(category.name);
+                    menuController.loadFilterMenuItems(
+                        dashcontroller.selectedFiltermenu.value, category.name);
+                    menuController.selectedCategory.value = category.name;
+                  },
+                ));
           },
         ));
   }

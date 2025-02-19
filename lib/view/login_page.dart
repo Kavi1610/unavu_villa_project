@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/app_textstyle.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
+import 'package:unavu_villa_project/models/floor_master_model.dart';
 import 'package:unavu_villa_project/widgets/app_TextFiled.dart';
 import '../viewmodels/login_viewmodel.dart';
 
@@ -59,130 +60,7 @@ class LoginPage extends StatelessWidget {
                       style: AppTextStyles.subheading1,
                     ),
                   ),
-                  const SizedBox(height: 20),
-
-                  // --------- First Drop-down -----------
-                  Text(
-                    "Select Role",
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.subheading1
-                        .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 8),
-                  Obx(
-                    () => Container(
-                      decoration: BoxDecoration(
-                        color: Colors
-                            .white, // Background color of the dropdown button
-                        borderRadius: BorderRadius.circular(24),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: DropdownButton<String>(
-                        borderRadius: BorderRadius.circular(24),
-                        padding: EdgeInsets.only(left: 12, right: 8),
-                        hint: Text(
-                          "Select Floor",
-                          style: AppTextStyles.heading.copyWith(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0XFFC2C2C2),
-                          ),
-                        ),
-                        value: controller.selectedRole.value,
-                        isExpanded:
-                            true, // Make the dropdown take the full width
-                        icon: Icon(Icons.arrow_forward_ios, size: 16),
-                        underline: SizedBox(), // Remove the underline
-                        dropdownColor: Colors
-                            .white, // Background color of the dropdown menu
-                        items: ["Admin", "User", "Guest"].map((String item) {
-                          return DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(item,
-                                style: AppTextStyles.heading.copyWith(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0XFFC2C2C2),
-                                )),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          controller.selectedRole.value = value!;
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // --------- Second Drop-down -----------
-                  Text(
-                    "Select Branch",
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.subheading1
-                        .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 8),
-                  Obx(
-                    () => Obx(
-                      () => Container(
-                        decoration: BoxDecoration(
-                          color: Colors
-                              .white, // Background color of the dropdown button
-                          borderRadius: BorderRadius.circular(24),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.2),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
-                        ),
-                        child: DropdownButton<String>(
-                          borderRadius: BorderRadius.circular(24),
-                          padding: EdgeInsets.only(left: 12, right: 8),
-                          hint: Text(
-                            "Select Branch",
-                            style: AppTextStyles.heading.copyWith(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0XFFC2C2C2),
-                            ),
-                          ),
-                          value: controller.selectedBranch.value,
-                          isExpanded:
-                              true, // Make the dropdown take the full width
-                          icon: Icon(Icons.arrow_forward_ios, size: 16),
-                          underline: SizedBox(), // Remove the underline
-                          dropdownColor: Colors
-                              .white, // Background color of the dropdown menu
-                          items: ["Admin", "User", "Guest"].map((String item) {
-                            return DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(item,
-                                  style: AppTextStyles.heading.copyWith(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color(0XFFC2C2C2),
-                                  )),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            controller.selectedBranch.value = value!;
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
 
                   // -------- Username Field --------
                   Text(
@@ -224,6 +102,135 @@ class LoginPage extends StatelessWidget {
                         controller.passwordController.value = value,
                   ),
 
+                  const SizedBox(height: 16),
+                  // --------- First Drop-down -----------
+                  Text(
+                    "Branch Id",
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.subheading1
+                        .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 8),
+                  Obx(() {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border:
+                            Border.all(color: AppColors.textFiled, width: 1),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 12, right: 8),
+                        child: DropdownButton<String>(
+                          borderRadius: BorderRadius.circular(24),
+                          hint: Text(
+                            "Select Branch",
+                            style: AppTextStyles.heading.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0XFFC2C2C2),
+                            ),
+                          ),
+                          value: controller.selectedRole.value.isEmpty
+                              ? null
+                              : controller
+                                  .selectedRole.value, // Corrected value
+                          isExpanded: true,
+                          icon: Icon(Icons.arrow_forward_ios, size: 16),
+                          underline: SizedBox(),
+                          dropdownColor: Colors.white,
+                          items: controller.RoletableDataList.toList()
+                              .map((String item) {
+                            return DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(item,
+                                  style: AppTextStyles.heading.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  )),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            controller
+                                .selelctRoles(newValue ?? ""); // Fixed typo
+                          },
+                        ),
+                      ),
+                    );
+                  }),
+
+                  const SizedBox(height: 16),
+
+                  // --------- Second Drop-down -----------
+                  Text(
+                    "Select Floor",
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.subheading1
+                        .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 8),
+                  Obx(() => Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border:
+                              Border.all(color: AppColors.textFiled, width: 1),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 12, right: 8),
+                          child: DropdownButton<String>(
+                            borderRadius: BorderRadius.circular(24),
+                            hint: Text(
+                              "Select Floor Id",
+                              style: AppTextStyles.heading.copyWith(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0XFFC2C2C2),
+                              ),
+                            ),
+                            value: controller.selectedBranch.value.isEmpty
+                                ? null
+                                : controller
+                                    .selectedBranch.value, // Corrected value
+                            isExpanded: true,
+                            icon: Icon(Icons.arrow_forward_ios, size: 16),
+                            underline: SizedBox(),
+                            dropdownColor: Colors.white,
+                            // Assuming Item has a property called floorname
+                            items: controller.BranchtableDataList.map<
+                                DropdownMenuItem<String>>((Item item) {
+                              return DropdownMenuItem<String>(
+                                value: item
+                                    .floorname, // Use the floorname property
+                                child: Text(
+                                    item.floorname, // Display the floorname
+                                    style: AppTextStyles.heading.copyWith(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black,
+                                    )),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              if (newValue != null) {
+                                // Find the corresponding floorname from the list
+                                final selectedItem =
+                                    controller.BranchtableDataList.firstWhere(
+                                  (item) => item.id == newValue,
+                                  // Default empty item
+                                );
+
+                                // Store only the ID and update UI based on floorname
+                                controller.selectedBranchId.value =
+                                    newValue; // Store ID
+                                controller.selectedBranch.value =
+                                    selectedItem.floorname; // Store floorname
+                              }
+                            },
+                          ),
+                        ),
+                      )),
                   const SizedBox(height: 16),
 
                   // --------- Login Button -----------

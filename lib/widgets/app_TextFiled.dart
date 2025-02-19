@@ -23,6 +23,10 @@ class CustomTextField extends StatelessWidget {
       child: TextField(
         obscureText: isObscure,
         onChanged: onChanged,
+        style: AppTextStyles.subheading1.copyWith(
+            color: AppColors.background,
+            fontWeight: FontWeight.w400,
+            fontSize: 14),
         decoration: InputDecoration(
           prefixIcon: Padding(
             padding: const EdgeInsets.all(12.0), // Adjust padding if needed

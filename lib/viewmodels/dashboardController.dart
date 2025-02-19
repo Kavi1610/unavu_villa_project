@@ -16,7 +16,7 @@ class DashboardController extends GetxController {
   RxInt selectedFilterIndex = 0.obs;
   RxString selectedFiltermenu = ''.obs;
   RxString selectedCategory = ''.obs;
-  var menuItems = <MenuItem>[].obs;
+  RxList menuItems = <MenuItem>[].obs;
   Rx<DeviceType> deviceType = DeviceType.tablet.obs;
   DashboardProvider dashboardProvider = DashboardProvider();
   OrderListResponse orderList = OrderListResponse();
@@ -101,8 +101,10 @@ class DashboardController extends GetxController {
           await SearchMenuService().searchMenuItems(categoryName);
       // Clear existing items and add the new items
       menuItems.clear(); // Clear existing items
-      menuItems.addAll(fetchedItems); // Add new items
+      menuItems.addAll(fetchedItems);
+      print("The values :$menuItems"); // Add new items
     } catch (e) {
+      print("The values Arun :$e");
       Get.snackbar("Error", "Failed to load menu items: $e");
     } finally {
       isLoading.value = false;

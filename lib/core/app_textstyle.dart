@@ -28,7 +28,7 @@ class AppTextStyles {
   );
 
   static TextStyle button = GoogleFonts.dmSans(
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: FontWeight.w600,
     color: AppColors.buttonText,
   );

@@ -16,7 +16,8 @@ class MenuService extends BaseProvider {
         ApiEndpoints.getallMenu,
         headers: {"Authorization": "Bearer $token"},
       );
-
+      print(
+          "The menu  load items fetched successfully: ${response.statusCode}");
       // Check for a successful response
       if (response.statusCode == 200) {
         // Check if the response body is already a Map

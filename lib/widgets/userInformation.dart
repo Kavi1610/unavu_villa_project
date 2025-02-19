@@ -81,7 +81,7 @@ class UserInformation extends StatelessWidget {
                 // Create the order request using values from the controllers
                 OrderModel orderRequest = OrderModel(
                   address: addressController.text,
-                  ordertype: 1,
+                  ordertype: 0,
                   status: 0,
                   tableid: 5,
                   numberofpeople: "4",
@@ -100,6 +100,7 @@ class UserInformation extends StatelessWidget {
 
                 // Call the createOrder method
                 menuController.createOrder(orderRequest);
+                menuController.showAlertDialogOrder();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange,
@@ -117,30 +118,30 @@ class UserInformation extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            // SizedBox(height: 16),
+            // ElevatedButton(
+            //   onPressed: () {},
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Color(0XFFFFF5EE),
+            //     padding: EdgeInsets.symmetric(vertical: 16, horizontal: 44),
+            //     shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(58)),
+            //   ),
+            //   child: Center(
+            //     child: Text(
+            //       "Verify KOT",
+            //       style: GoogleFonts.dmSans(
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.bold,
+            //           color: AppColors.orange),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0XFFFFF5EE),
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 44),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(58)),
-              ),
-              child: Center(
-                child: Text(
-                  "Verofy KOT",
-                  style: GoogleFonts.dmSans(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.orange),
-                ),
-              ),
-            ),
-
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0XFF5EE),
+                backgroundColor: Color(0XFFFFFFFF),
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 44),
                 shape: RoundedRectangleBorder(
                     side: BorderSide(width: 1, color: AppColors.orange),
@@ -152,7 +153,7 @@ class UserInformation extends StatelessWidget {
                   style: GoogleFonts.dmSans(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                      color: AppColors.orange),
                 ),
               ),
             ),
