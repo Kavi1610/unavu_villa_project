@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unavu_villa_project/core/enums.dart';
+import 'package:unavu_villa_project/models/getMenuItem.dart';
 import 'package:unavu_villa_project/models/orderDetaul.dart';
 import 'package:unavu_villa_project/models/order_list_response_model.dart';
 import 'package:unavu_villa_project/provider/dashboard_provider.dart';
+import 'package:unavu_villa_project/provider/search_menu_provider.dart';
 import 'package:unavu_villa_project/viewmodels/orderController.dart';
 
 class DashboardController extends GetxController {
@@ -14,7 +16,7 @@ class DashboardController extends GetxController {
   RxInt selectedFilterIndex = 0.obs;
   RxString selectedFiltermenu = ''.obs;
   RxString selectedCategory = ''.obs;
-
+  var menuItems = <MenuItem>[].obs;
   Rx<DeviceType> deviceType = DeviceType.tablet.obs;
   DashboardProvider dashboardProvider = DashboardProvider();
   OrderListResponse orderList = OrderListResponse();
@@ -91,5 +93,19 @@ class DashboardController extends GetxController {
 
   void setSelectedTabIndex(int index) {
     selectedTabIndex.value = index;
+  }
+
+  void loadFilterMenuSearch(String categoryName) async {
+    try {
+      final fetchedItems =
+          await SearchMenuService().searchMenuItems(categoryName);
+      // Clear existing items and add the new items
+      menuItems.clear(); // Clear existing items
+      menuItems.addAll(fetchedItems); // Add new items
+    } catch (e) {
+      Get.snackbar("Error", "Failed to load menu items: $e");
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

@@ -7,6 +7,7 @@ import 'package:unavu_villa_project/provider/getMenuProvider.dart';
 import 'package:unavu_villa_project/provider/get_catagory_filter_item.dart';
 import 'package:unavu_villa_project/provider/get_menu_item_provider.dart';
 import 'package:unavu_villa_project/provider/orderTake_provider.dart';
+import 'package:unavu_villa_project/provider/search_menu_provider.dart';
 
 class FoodMenuController extends GetxController {
   var menuItems = <MenuItem>[].obs;
@@ -124,7 +125,6 @@ class FoodMenuController extends GetxController {
 
   void loadMenuItems() async {
     try {
-      isLoading.value = true;
       final fetchedItems = await MenuService().fetchMenuItems();
       menuItems.addAll(fetchedItems);
     } catch (e) {
@@ -136,7 +136,6 @@ class FoodMenuController extends GetxController {
 
   void loadFilterMenuItems(String categoryId, String categoryName) async {
     try {
-      isLoading.value = true;
       final fetchedItems = await GetCatagoryFilterItem()
           .fetcfilterhMenuItems(categoryName, categoryId);
       // Clear existing items and add the new items
@@ -151,7 +150,6 @@ class FoodMenuController extends GetxController {
 
   void loadCatMenuItems() async {
     try {
-      isLoading.value = true;
       final fetchedItems = await MenuCategoryList().fetchMenuCategories();
       // Clear existing items and add the new items
       menuItems.clear(); // Clear existing items
@@ -166,8 +164,6 @@ class FoodMenuController extends GetxController {
 
   void createOrder(OrderModel orderDetail) async {
     try {
-      isLoading.value = true;
-
       // Call the createOrder method from OrderRepo
       final fetchedItems = await OrderRepo().createOrder(order: orderDetail);
 

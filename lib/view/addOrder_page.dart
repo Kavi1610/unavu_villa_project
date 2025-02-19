@@ -12,6 +12,7 @@ import 'package:unavu_villa_project/viewmodels/add_orderButton_Controller.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
 import 'package:unavu_villa_project/viewmodels/menuController.dart';
 import 'package:unavu_villa_project/widgets/dashboard_appbar.dart';
+import 'package:unavu_villa_project/widgets/dropdown_widget.dart';
 import 'package:unavu_villa_project/widgets/filterchips.dart';
 import 'package:unavu_villa_project/widgets/menuItemCard.dart';
 import 'package:unavu_villa_project/widgets/menu_button.dart';
@@ -140,32 +141,26 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
             border: Border.all(
               color: Colors.grey.shade400,
             )),
-        child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: isiconneed
-                ? TextField(
-                    decoration: InputDecoration(
-                      hintText: title,
-                      hintStyle: AppTextStyles.heading.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0XFFC2C2C2)),
-                      border: InputBorder.none,
-                      suffixIcon: Icon(Icons.arrow_forward_ios, size: 16),
-                      contentPadding: EdgeInsets.only(bottom: 8, left: 21),
-                    ),
-                  )
-                : TextField(
-                    decoration: InputDecoration(
-                      hintText: title,
-                      hintStyle: AppTextStyles.heading.copyWith(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0XFFC2C2C2)),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.only(bottom: 8, left: 21),
-                    ),
-                  )));
+        child: isiconneed
+            ? MyDropdown(
+                title: "Select an option",
+                items: [
+                  "Option 1",
+                  "Option 2",
+                  "Option 3"
+                ], // Your dropdown items
+              )
+            : TextField(
+                decoration: InputDecoration(
+                  hintText: title,
+                  hintStyle: AppTextStyles.heading.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0XFFC2C2C2)),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(bottom: 8, left: 21),
+                ),
+              ));
   }
 
   @override

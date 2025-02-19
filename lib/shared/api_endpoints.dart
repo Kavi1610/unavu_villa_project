@@ -10,4 +10,8 @@ class ApiEndpoints {
   static String getCategoryMenuFiter(String categoryId, String categoryName) {
     return "menumaster/get_items_by_filter/?category=$categoryName&type=$categoryId"; // Example of adding a parameter
   }
+
+  static String getCategoryMenueSearch(String categoryName) {
+    return "menumaster/search_menumaster/?search=$categoryName&page=1&size=50"; // Example of adding a parameter
+  }
 }

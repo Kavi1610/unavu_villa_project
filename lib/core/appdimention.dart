@@ -18,5 +18,5 @@ class AppDimensions {
 
   static double get containerWidth => isTablet ? 450 : 350;
   static double get buttonHeight => isTablet ? 56 : 48;
-  static double get padding => isTablet ? 26 : 16;
+  static double get padding => isTablet ? 16 : 16;
 }

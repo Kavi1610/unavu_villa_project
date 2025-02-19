@@ -69,44 +69,56 @@ class LoginPage extends StatelessWidget {
                         .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 8),
-                  Obx(() => DropdownButtonFormField<String>(
-                        value: controller.selectedRole.value,
-                        style: GoogleFonts.dmSans(
+                  Obx(
+                    () => Container(
+                      decoration: BoxDecoration(
+                        color: Colors
+                            .white, // Background color of the dropdown button
+                        borderRadius: BorderRadius.circular(24),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: DropdownButton<String>(
+                        borderRadius: BorderRadius.circular(24),
+                        padding: EdgeInsets.only(left: 12, right: 8),
+                        hint: Text(
+                          "Select Floor",
+                          style: AppTextStyles.heading.copyWith(
                             fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 14),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.textFiled, width: 1),
-                              borderRadius: BorderRadius.circular(12)),
-                          errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.errorText, width: 1),
-                              borderRadius: BorderRadius.circular(12)),
-                          disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.textFiled, width: 1),
-                              borderRadius: BorderRadius.circular(12)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.textFiled, width: 1),
-                              borderRadius: BorderRadius.circular(12)),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.textFiled, width: 1),
-                              borderRadius: BorderRadius.circular(12)),
+                            fontWeight: FontWeight.w400,
+                            color: Color(0XFFC2C2C2),
+                          ),
                         ),
-                        items: ["Admin", "User", "Guest"]
-                            .map((role) => DropdownMenuItem(
-                                value: role, child: Text(role)))
-                            .toList(),
+                        value: controller.selectedRole.value,
+                        isExpanded:
+                            true, // Make the dropdown take the full width
+                        icon: Icon(Icons.arrow_forward_ios, size: 16),
+                        underline: SizedBox(), // Remove the underline
+                        dropdownColor: Colors
+                            .white, // Background color of the dropdown menu
+                        items: ["Admin", "User", "Guest"].map((String item) {
+                          return DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(item,
+                                style: AppTextStyles.heading.copyWith(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0XFFC2C2C2),
+                                )),
+                          );
+                        }).toList(),
                         onChanged: (value) {
                           controller.selectedRole.value = value!;
                         },
-                      )),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 16),
 
                   // --------- Second Drop-down -----------
@@ -117,44 +129,59 @@ class LoginPage extends StatelessWidget {
                         .copyWith(fontSize: 12, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 8),
-                  Obx(() => DropdownButtonFormField<String>(
-                        style: GoogleFonts.dmSans(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black),
-                        value: controller.selectedBranch.value,
-                        decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.textFiled, width: 1),
-                              borderRadius: BorderRadius.circular(12)),
-                          errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.errorText, width: 1),
-                              borderRadius: BorderRadius.circular(12)),
-                          disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.textFiled, width: 1),
-                              borderRadius: BorderRadius.circular(12)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.textFiled, width: 1),
-                              borderRadius: BorderRadius.circular(12)),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: AppColors.textFiled, width: 1),
-                              borderRadius: BorderRadius.circular(12)),
+                  Obx(
+                    () => Obx(
+                      () => Container(
+                        decoration: BoxDecoration(
+                          color: Colors
+                              .white, // Background color of the dropdown button
+                          borderRadius: BorderRadius.circular(24),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
                         ),
-                        items: ["New York", "Los Angeles", "Chicago"]
-                            .map((branch) => DropdownMenuItem(
-                                value: branch, child: Text(branch)))
-                            .toList(),
-                        onChanged: (value) {
-                          controller.selectedBranch.value = value!;
-                        },
-                      )),
+                        child: DropdownButton<String>(
+                          borderRadius: BorderRadius.circular(24),
+                          padding: EdgeInsets.only(left: 12, right: 8),
+                          hint: Text(
+                            "Select Branch",
+                            style: AppTextStyles.heading.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0XFFC2C2C2),
+                            ),
+                          ),
+                          value: controller.selectedBranch.value,
+                          isExpanded:
+                              true, // Make the dropdown take the full width
+                          icon: Icon(Icons.arrow_forward_ios, size: 16),
+                          underline: SizedBox(), // Remove the underline
+                          dropdownColor: Colors
+                              .white, // Background color of the dropdown menu
+                          items: ["Admin", "User", "Guest"].map((String item) {
+                            return DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(item,
+                                  style: AppTextStyles.heading.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0XFFC2C2C2),
+                                  )),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            controller.selectedBranch.value = value!;
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 16),
 
                   // -------- Username Field --------
@@ -196,16 +223,7 @@ class LoginPage extends StatelessWidget {
                     onChanged: (value) =>
                         controller.passwordController.value = value,
                   ),
-                  const SizedBox(height: 16),
 
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text("Forgot password?",
-                          style: AppTextStyles.errorText),
-                    ),
-                  ),
                   const SizedBox(height: 16),
 
                   // --------- Login Button -----------
