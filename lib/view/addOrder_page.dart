@@ -186,7 +186,9 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
               children: [
                 SizedBox(
                     width: MediaQuery.of(context).size.width / 1.7,
-                    child: AppSearchBar()), // Fixed width for search bar
+                    child: AppSearchBar(
+                      onClicked: (val) {},
+                    )), // Fixed width for search bar
                 Container(
                   height: isMobile ? 50 : 60,
                   decoration: BoxDecoration(

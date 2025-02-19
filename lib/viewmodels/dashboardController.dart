@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:unavu_villa_project/core/enums.dart';
 import 'package:unavu_villa_project/models/orderDetaul.dart';
 import 'package:unavu_villa_project/models/order_list_response_model.dart';
+import 'package:unavu_villa_project/models/report_response_model.dart';
 import 'package:unavu_villa_project/provider/dashboard_provider.dart';
 import 'package:unavu_villa_project/viewmodels/orderController.dart';
 
@@ -18,9 +19,9 @@ class DashboardController extends GetxController {
   Rx<DeviceType> deviceType = DeviceType.tablet.obs;
   DashboardProvider dashboardProvider = DashboardProvider();
   OrderListResponse orderList = OrderListResponse();
+  ReportResponseModel reportData = ReportResponseModel();
   RxBool isLoading = true.obs;
-  List<String> get filterOptions =>
-      ['All', 'Dine In', 'Takeaway', 'Room Service', 'Delivery'];
+  List<String> get filterOptions => ['Dine In'];
   List<String> get filterOrderScreen => [
         'All',
         'Veg',
@@ -35,14 +36,22 @@ class DashboardController extends GetxController {
   }
 
   fetchAllOrders() async {
-    await dashboardProvider.fetchOrderList().then((val) {
+    String branchId = "101";
+    await dashboardProvider.fetchOrderList(branchId).then((val) {
       if (val.status == true) {
         orderList = val;
+        fetchReport();
         debugPrint("theee resposs : ${orderList.toJson()}");
-        isLoading(false);
       } else {
         isLoading(true);
       }
+    });
+  }
+
+  void fetchReport() async {
+    await dashboardProvider.fetchReport().then((val) {
+      reportData = val;
+      isLoading(false);
     });
   }
 

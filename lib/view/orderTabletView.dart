@@ -39,7 +39,9 @@ class DashboardView extends StatelessWidget {
                   isMobile
                       ? Column(
                           children: [
-                            AppSearchBar(),
+                            AppSearchBar(
+                              onClicked: (val) {},
+                            ),
                             SizedBox(height: 10),
                             FilterChips(isTablet: false),
                           ],
@@ -60,7 +62,9 @@ class DashboardView extends StatelessWidget {
                                           child: Padding(
                                         padding:
                                             const EdgeInsets.only(right: 21.0),
-                                        child: AppSearchBar(),
+                                        child: AppSearchBar(
+                                          onClicked: (val) {},
+                                        ),
                                       )), // Ensuring it expands properly
 
                                       FilterChips(isTablet: true),
@@ -99,6 +103,109 @@ class DashboardView extends StatelessWidget {
                 ],
               ),
             ),
+            Obx(() => controller.isLoading.value
+                ? blackLoader()
+                : Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  Text("Today Sales"),
+                                  Text(
+                                      "${controller.reportData.data!.orderCompletedToday}"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  Text("Today Order Completed"),
+                                  Text(
+                                      "${controller.reportData.data!.orderCompletedToday}"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  Text("Today Order Cancelled"),
+                                  Text(
+                                      "${controller.reportData.data!.orderCancelledToday}"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  Text("This Week Sales"),
+                                  Text(
+                                      "${controller.reportData.data!.orderCompletedWeek}"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  Text("This Week Completed"),
+                                  Text(
+                                      "${controller.reportData.data!.orderCompletedWeek}"),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  Text("This Week Cancelled"),
+                                  Text(
+                                      "${controller.reportData.data!.orderCancelledWeek}"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )),
             Obx(() => controller.isLoading.value
                 ? blackLoader()
                 : Flexible(

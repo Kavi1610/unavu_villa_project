@@ -1,14 +1,17 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
 
 class AppSearchBar extends StatelessWidget {
-  AppSearchBar({Key? key}) : super(key: key);
+  final ValueChanged<String> onClicked;
+  AppSearchBar({super.key, required this.onClicked});
 
   final DashboardController controller =
       Get.find<DashboardController>(); // FIXED: Use existing instance
-
+  String selectedFilter = '';
   @override
   Widget build(BuildContext context) {
     controller.updateDeviceType(context);
@@ -49,10 +52,64 @@ class AppSearchBar extends StatelessWidget {
             ),
           ),
           SizedBox(width: 8),
-          Icon(Icons.filter_list,
-              size: iconSize, color: Colors.grey), // Replaced Image with Icon
+          IconButton(
+              onPressed: () {
+                _showFilterDialog(context);
+              },
+              icon: Icon(Icons.filter_list,
+                  size: iconSize,
+                  color: Colors.grey)), // Replaced Image with Icon
         ],
       ),
+    );
+  }
+
+  void _showFilterDialog(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Filter Options",
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildFilterOption("Date", context),
+              _buildFilterOption("Ongoing", context),
+              _buildFilterOption("Completed", context),
+              _buildFilterOption("Cancelled", context),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildFilterOption(String title, context) {
+    return ListTile(
+      title: Text(title),
+      leading: Radio<String>(
+        value: title,
+        groupValue: selectedFilter,
+        onChanged: (value) {
+          selectedFilter = value!;
+
+          Navigator.of(context).pop(); // Close dialog after selection
+        },
+      ),
+      onTap: () {
+        selectedFilter = title;
+        onClicked(selectedFilter);
+        Navigator.of(context).pop();
+      },
     );
   }
 }
