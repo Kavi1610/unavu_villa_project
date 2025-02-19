@@ -63,7 +63,7 @@ class OrderCard extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            '${order.tableid ?? ""}',
+                            '${order.tableid ?? "-"}',
                             style: GoogleFonts.dmSans(
                               fontSize: fontSizeHeader,
                               fontWeight: FontWeight.w500,
@@ -197,7 +197,7 @@ class OrderCard extends StatelessWidget {
                 ),
                 Padding(
                     padding: EdgeInsets.all(padding),
-                    child: order.status == OrderStatus.pending
+                    child: order.status == 0
                         ? Row(
                             children: [
                               Expanded(

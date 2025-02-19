@@ -20,7 +20,7 @@ Future<void> storeToken(String token) async {
 // Function to fetch the token
 Future<String?> fetchToken() async {
   try {
-    String? token = storage.read("token");
+    String? token = await storage.read("token");
     return token;
   } catch (e) {
     print("Error reading token from storage: $e");

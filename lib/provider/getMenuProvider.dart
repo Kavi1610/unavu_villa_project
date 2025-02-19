@@ -9,7 +9,10 @@ class MenuService extends BaseProvider {
   Future<List<MenuItem>> fetchMenuItems() async {
     try {
       // Fetch the token directly
-      String? token = await fetchToken();
+      var token;
+      await fetchToken().then((val) {
+        token = val;
+      });
 
       // Make the API call
       final response = await get(
