@@ -14,9 +14,10 @@ class AuthRepo extends BaseProvider {
 
       // Create the request body as a Map
       final Map<String, dynamic> requestBody = {
-        "username": request.username,
-        "password":
-            request.password // Fixed: was using username instead of password
+        "branchid": 101,
+        "floorid": 1,
+        "userid": "admin1",
+        "password": "admin"
       };
 
       final response = await post(

@@ -6,7 +6,9 @@ import 'package:unavu_villa_project/core/app_icon.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
 import 'package:unavu_villa_project/models/getMenuItem.dart';
 import 'package:unavu_villa_project/models/menuItem.dart';
+import 'package:unavu_villa_project/models/takeOrderModel.dart';
 import 'package:unavu_villa_project/viewmodels/menuController.dart';
+import 'package:unavu_villa_project/widgets/userInformation.dart';
 
 class OrderDetailsWidget extends StatelessWidget {
   final FoodMenuController menuController = Get.find<FoodMenuController>();
@@ -48,6 +50,9 @@ class OrderDetailsWidget extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),
                     child: TextField(
+                      onChanged: (value) {
+                        menuController.orderNoteValue(value);
+                      },
                       decoration: InputDecoration(
                         hintText: "Write your order note here...",
                         hintStyle: GoogleFonts.dmSans(
@@ -151,236 +156,6 @@ class OrderDetailsWidget extends StatelessWidget {
       ),
     );
   }
-
-  Widget UserInformation() {
-    return Container(
-        width: AppDimensions.screenWidth * 0.3,
-        color: Colors.white,
-        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-        child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          // Title
-          Text(
-            'Orders details',
-            style: GoogleFonts.dmSans(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 10),
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Full name",
-                style: GoogleFonts.dmSans(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.iconColor),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    hintText: "Enter name",
-                    hintStyle: GoogleFonts.dmSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0XFFC2C2C2)),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            BorderSide(color: AppColors.textFiled, width: 1))),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "Phone number",
-                style: GoogleFonts.dmSans(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.iconColor),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    hintText: "Enter customer phone number",
-                    hintStyle: GoogleFonts.dmSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0XFFC2C2C2)),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            BorderSide(color: AppColors.textFiled, width: 1))),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "Address",
-                style: GoogleFonts.dmSans(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.iconColor),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    hintText: "Enter customer address",
-                    hintStyle: GoogleFonts.dmSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0XFFC2C2C2)),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            BorderSide(color: AppColors.textFiled, width: 1))),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "GST Number",
-                style: GoogleFonts.dmSans(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.iconColor),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                    hintText: "Enter GST number",
-                    hintStyle: GoogleFonts.dmSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0XFFC2C2C2)),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            BorderSide(color: AppColors.textFiled, width: 1))),
-              ),
-              SizedBox(height: 20),
-              Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Sub Total",
-                      style: GoogleFonts.dmSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.iconColor)),
-                  Text('\$${menuController.subTotal.toStringAsFixed(2)}',
-                      style: GoogleFonts.dmSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0XFF19191C))),
-                ],
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Tax (10%)",
-                      style: GoogleFonts.dmSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.iconColor)),
-                  Text('\$${menuController.tax.toStringAsFixed(2)}',
-                      style: GoogleFonts.dmSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0XFF19191C))),
-                ],
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Total",
-                      style: GoogleFonts.dmSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.iconColor)),
-                  Text('\$${menuController.tax.toStringAsFixed(2)}',
-                      style: GoogleFonts.dmSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.orange)),
-                ],
-              ),
-              SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 44),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(36)),
-                ),
-                child: Center(
-                  child: Text(
-                    "Save and Send to KOT",
-                    style: GoogleFonts.dmSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.orange,
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(36)),
-                ),
-                child: Center(
-                  child: Text(
-                    "Verify KOT",
-                    style: GoogleFonts.dmSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
-              ),
-              SizedBox(height: 10),
-              OutlinedButton(
-                onPressed: () {
-                  Get.back();
-                },
-                style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                  side: BorderSide(color: Colors.red),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-                child: Center(
-                  child: Text(
-                    "Cancel",
-                    style: GoogleFonts.dmSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red),
-                  ),
-                ),
-              ),
-            ],
-          )
-        ])));
-  }
 }
 
 // Cart Item Widget
@@ -432,13 +207,28 @@ class CartItem extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: AppColors.textFiled)),
-                Obx(() => Text(
-                      "\$${(item.price * (menuController.itemQuantities[item] ?? 1))}",
-                      style: GoogleFonts.dmSans(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.orange),
-                    )),
+                Obx(() {
+                  // Parse item.price to double
+                  double itemPrice = double.tryParse(item.price) ??
+                      0.0; // Default to 0.0 if parsing fails
+                  int quantity = menuController.itemQuantities[item] ??
+                      0; // Get the quantity, default to 0 if not found
+
+                  // Calculate the total price
+                  double totalPrice = itemPrice * quantity;
+
+                  // Format the total price as a string with two decimal places
+                  String formattedPrice = "\$${totalPrice.toStringAsFixed(2)}";
+
+                  return Text(
+                    formattedPrice,
+                    style: GoogleFonts.dmSans(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.orange,
+                    ),
+                  );
+                }),
               ],
             ),
           ),

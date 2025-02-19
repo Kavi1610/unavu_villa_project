@@ -53,7 +53,8 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
         height: isMobile ? 56.0 : MediaQuery.sizeOf(context).height / 3,
         decoration: BoxDecoration(
             color: Colors.white,
-            border: Border(bottom: BorderSide(color: AppColors.borderclr))),
+            border: Border(
+                bottom: BorderSide(color: AppColors.borderclr, width: 1))),
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

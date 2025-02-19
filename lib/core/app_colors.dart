@@ -26,5 +26,5 @@ class AppColors {
   static const Color textLight = Color(0xFF757575);
 
   static const Color bgclr = Color(0xfff8f9fd);
-  static Color borderclr = Colors.grey.shade300;
+  static Color borderclr = Color(0XFFE4E4E4);
 }

@@ -5,30 +5,30 @@ import 'app_colors.dart';
 
 class AppTextStyles {
   static TextStyle heading = GoogleFonts.dmSans(
-    fontSize: AppDimensions.scaleFont(18),
+    fontSize: 18,
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
 
   static TextStyle subheading = GoogleFonts.dmSans(
-    fontSize: AppDimensions.scaleFont(16),
+    fontSize: 16,
     fontWeight: FontWeight.w500,
     color: AppColors.textSecondary,
   );
 
   static TextStyle subheading1 = GoogleFonts.dmSans(
-    fontSize: AppDimensions.scaleFont(10),
+    fontSize: 10,
     fontWeight: FontWeight.w400,
     color: AppColors.textSecondary,
   );
 
   static TextStyle body = GoogleFonts.dmSans(
-    fontSize: AppDimensions.scaleFont(16),
+    fontSize: 16,
     color: AppColors.textPrimary,
   );
 
   static TextStyle button = GoogleFonts.dmSans(
-    fontSize: AppDimensions.scaleFont(16),
+    fontSize: 6,
     fontWeight: FontWeight.w600,
     color: AppColors.buttonText,
   );
@@ -39,7 +39,7 @@ class AppTextStyles {
     color: AppColors.errorText,
   );
   static TextStyle icontext = GoogleFonts.dmSans(
-    fontSize: AppDimensions.scaleFont(12),
+    fontSize: 12,
     fontWeight: FontWeight.w500,
     color: AppColors.iconColor,
   );

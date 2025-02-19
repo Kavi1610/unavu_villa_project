@@ -8,7 +8,7 @@ class MenuCategoryList extends BaseProvider {
   Future<List<MenuCategory>> fetchMenuCategories() async {
     try {
       // Fetch the token directly
-      String token = await fetchToken();
+      String? token = await fetchToken();
 
       // Make the API call
       final response = await get(

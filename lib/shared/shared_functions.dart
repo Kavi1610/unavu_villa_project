@@ -8,11 +8,24 @@ toastify(int type, String message) {
       snackPosition: SnackPosition.BOTTOM);
 }
 
-Future<String> fetchToken() async {
-  // String token = await storage.read("token");
-  String token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZXhwIjoxNzcxNDYxNzY1fQ.ylXm0YekyE38UhdxRQTFZTTeEoK0Bhbb1c8-gizfWd4";
-  return token;
+Future<void> storeToken(String token) async {
+  try {
+    await storage.write("token", token);
+    print("Token stored successfully.");
+  } catch (e) {
+    print("Error writing token to storage: $e");
+  }
+}
+
+// Function to fetch the token
+Future<String?> fetchToken() async {
+  try {
+    String? token = storage.read("token");
+    return token;
+  } catch (e) {
+    print("Error reading token from storage: $e");
+    return null;
+  }
 }
 
 blackLoader() {

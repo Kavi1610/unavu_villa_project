@@ -12,14 +12,20 @@ class DashboardController extends GetxController {
   RxString searchQuery = ''.obs;
   RxInt selectedTabIndex = 0.obs;
   RxInt selectedFilterIndex = 0.obs;
+  RxString selectedFiltermenu = ''.obs;
+  RxString selectedCategory = ''.obs;
+
   Rx<DeviceType> deviceType = DeviceType.tablet.obs;
   DashboardProvider dashboardProvider = DashboardProvider();
   OrderListResponse orderList = OrderListResponse();
   RxBool isLoading = true.obs;
   List<String> get filterOptions =>
       ['All', 'Dine In', 'Takeaway', 'Room Service', 'Delivery'];
-  List<String> get filterOrderScreen =>
-      ['All', 'Chicken', 'Seafood', 'Pasta', 'Rice bowl'];
+  List<String> get filterOrderScreen => [
+        'All',
+        'Veg',
+        'Non Veg',
+      ];
   @override
   void onInit() {
     debugPrint("initState workss");
@@ -74,8 +80,13 @@ class DashboardController extends GetxController {
     orderProvider.markItemAsDelivered(orderId, itemIndex);
   }
 
-  void setFilterIndex(int index) {
+  void setFilterIndex(int index, String name) {
     selectedFilterIndex.value = index;
+    selectedFiltermenu.value = name;
+  }
+
+  void onCategorySelected(String category) {
+    selectedCategory.value = category;
   }
 
   void setSelectedTabIndex(int index) {

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
+import 'package:unavu_villa_project/viewmodels/menuController.dart';
 
 class FilterChips extends StatelessWidget {
   final bool isfromaddOrderScreen;
@@ -11,6 +12,7 @@ class FilterChips extends StatelessWidget {
       {super.key, this.isTablet = true, this.isfromaddOrderScreen = false});
 
   final DashboardController controller = Get.find<DashboardController>();
+  final FoodMenuController menuController = Get.put(FoodMenuController());
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +20,14 @@ class FilterChips extends StatelessWidget {
 
     return Obx(
       () => Container(
-        width: isTablet
-            ? screensize.width / 2.2
-            : double
-                .infinity, // Limited width for tablets, full width for mobile
+        width: screensize.width / 3,
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             children: List.generate(
-              controller.filterOptions.length,
+              isfromaddOrderScreen
+                  ? controller.filterOrderScreen.length
+                  : controller.filterOptions.length,
               (index) => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: ChoiceChip(
@@ -57,6 +58,12 @@ class FilterChips extends StatelessWidget {
                   ),
                   onSelected: (selected) {
                     controller.selectedFilterIndex.value = index;
+                    controller.selectedFiltermenu.value = isfromaddOrderScreen
+                        ? controller.filterOrderScreen[index]
+                        : controller.filterOptions[index];
+                    menuController.loadFilterMenuItems(
+                        controller.selectedFiltermenu.value,
+                        controller.selectedCategory.value);
                   },
                 ),
               ),

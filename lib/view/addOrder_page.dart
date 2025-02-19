@@ -9,6 +9,7 @@ import 'package:unavu_villa_project/models/getMenuItem.dart';
 import 'package:unavu_villa_project/models/menuItem.dart';
 import 'package:unavu_villa_project/models/menu_catagory_list_%20model.dart';
 import 'package:unavu_villa_project/viewmodels/add_orderButton_Controller.dart';
+import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
 import 'package:unavu_villa_project/viewmodels/menuController.dart';
 import 'package:unavu_villa_project/widgets/dashboard_appbar.dart';
 import 'package:unavu_villa_project/widgets/filterchips.dart';
@@ -29,12 +30,6 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
   ButtonController buttonController = Get.put(ButtonController());
   final FoodMenuController menuController = Get.put(FoodMenuController());
 
-  void _onCategorySelected(String category) {
-    setState(() {
-      selectedCategory = category;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -46,9 +41,10 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
   void showAlert() {
     Get.dialog(
       AlertDialog(
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         content: SizedBox(
-          height: AppDimensions.screenHeight / 2.8,
+          height: AppDimensions.screenHeight / 3.2,
           width: AppDimensions.screenWidth / 2.5,
           child: Column(
             mainAxisSize: MainAxisSize.max,
@@ -72,12 +68,15 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                       ))
                 ],
               ),
+              SizedBox(height: 6),
               Divider(
                 height: 0,
               ),
+              SizedBox(height: 18),
               alertdialogcontent(title: "Select Table", isiconneed: true),
+              SizedBox(height: 18),
               alertdialogcontent(title: "Number of people", isiconneed: false),
-              SizedBox(height: 10),
+              SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -87,10 +86,11 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                       Get.back();
                     },
                     style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32)),
-                      side: BorderSide(color: AppColors.orange),
-                    ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32)),
+                        side: BorderSide(color: AppColors.orange),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 16)),
                     child: Text(
                       "Cancel",
                       style: AppTextStyles.heading.copyWith(
@@ -110,6 +110,8 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                         backgroundColor: Colors.orange,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32)),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                       ),
                       child: Text("Add Items",
                           style: AppTextStyles.heading.copyWith(
@@ -183,7 +185,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                    width: MediaQuery.of(context).size.width / 2,
+                    width: MediaQuery.of(context).size.width / 1.7,
                     child: AppSearchBar()), // Fixed width for search bar
                 Container(
                   height: isMobile ? 50 : 60,
@@ -219,6 +221,9 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
 
                       return sideMenuWidget(menuController.menuCatagoryItem);
                     })),
+                SizedBox(
+                  width: 3,
+                ),
                 // Main content section
                 Expanded(
                   child: Column(
@@ -245,27 +250,41 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                             return Center(child: Text("No items available"));
                           }
 
-                          return GridView.builder(
-                            shrinkWrap: true,
-                            physics:
-                                ClampingScrollPhysics(), // Prevent scrolling if inside a scrollable widget
-                            itemCount: menuController.menuItems.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: isMobile ? 1 : 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              childAspectRatio: 1, // Adjust this value
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Color(0XFFDDDDDD).withOpacity(0.1),
+                              border: Border(
+                                  right: BorderSide(
+                                      color: AppColors.borderclr, width: 1)),
                             ),
-                            itemBuilder: (context, index) {
-                              var item = menuController.menuItems[index];
-                              return MenuItemCard(item: item);
-                            },
+                            child: GridView.builder(
+                              shrinkWrap: true,
+                              physics:
+                                  ClampingScrollPhysics(), // Prevent scrolling if inside a scrollable widget
+                              itemCount: menuController.menuItems.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: isMobile ? 2 : 3,
+                                crossAxisSpacing: 6,
+                                mainAxisSpacing: 10,
+                                childAspectRatio: 2 / 1.9, // Adjust this value
+                              ),
+                              itemBuilder: (context, index) {
+                                var item = menuController.menuItems[index];
+                                return MenuItemCard(item: item);
+                              },
+                            ),
                           );
                         }),
                       ),
                     ],
                   ),
+                ),
+                SizedBox(
+                  width: 3,
+                ),
+                Divider(
+                  color: AppColors.borderclr,
                 ),
                 // Order Details Section with Fixed Width
                 SizedBox(
@@ -273,7 +292,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                       ? screensize.width * 0.3
                       : screensize.width * 0.3,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 38),
+                    padding: EdgeInsets.only(top: 16),
                     child: OrderDetailsWidget(),
                   ),
                 ),
@@ -473,23 +492,28 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
   }
 
   Container sideMenuWidget(List<MenuCategory> menuCategory) {
+    final DashboardController dashcontroller = Get.find<DashboardController>();
     return Container(
-        padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: AppColors.cardBackground,
-          border: Border(right: BorderSide(color: AppColors.borderclr)),
+          border:
+              Border(right: BorderSide(color: AppColors.borderclr, width: 1)),
         ),
         child: ListView.separated(
-          padding: EdgeInsets.all(8), // Optional: Add padding around the list
+          padding: EdgeInsets.all(6), // Optional: Add padding around the list
           itemCount: menuCategory.length,
           separatorBuilder: (context, index) =>
-              SizedBox(height: 10), // Space between items
+              SizedBox(height: 6), // Space between items
           itemBuilder: (context, index) {
             final category = menuCategory[index];
             return CategoryIcon(
               text: category.name,
               selected: selectedCategory == category.name,
-              onTap: () => _onCategorySelected(category.name),
+              onTap: () {
+                dashcontroller.onCategorySelected(category.name);
+                menuController.loadFilterMenuItems(
+                    dashcontroller.selectedFiltermenu.value, category.name);
+              },
             );
           },
         ));

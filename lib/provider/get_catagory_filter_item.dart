@@ -5,15 +5,16 @@ import 'package:unavu_villa_project/shared/api_endpoints.dart';
 import 'package:unavu_villa_project/shared/shared_functions.dart';
 import 'dart:convert';
 
-class MenuService extends BaseProvider {
-  Future<List<MenuItem>> fetchMenuItems() async {
+class GetCatagoryFilterItem extends BaseProvider {
+  Future<List<MenuItem>> fetcfilterhMenuItems(
+      String categoryId, String categoryName) async {
     try {
       // Fetch the token directly
       String? token = await fetchToken();
 
       // Make the API call
       final response = await get(
-        ApiEndpoints.getallMenu,
+        ApiEndpoints.getCategoryMenuFiter(categoryName, categoryId),
         headers: {"Authorization": "Bearer $token"},
       );
 
@@ -26,14 +27,22 @@ class MenuService extends BaseProvider {
 
         print("The menu items fetched successfully: ${response.body}");
 
+        // Check if the API call was successful
+        if (jsonData['status'] == false) {
+          throw Exception("API call failed: ${jsonData['message']}");
+        }
+
         // Safely access the items
-        final List<dynamic>? items = jsonData['data']?['items'];
-        if (items == null) {
-          throw Exception("Response missing 'items' field");
+        final List<dynamic>? items =
+            jsonData['data'] is List ? jsonData['data'] : [];
+
+        // Check if items is empty
+        if (items!.isEmpty) {
+          return []; // Return an empty list if there are no items
         }
 
         // Map the items to MenuItem objects
-        return items
+        return items!
             .map((item) {
               try {
                 return MenuItem.fromJson(item);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/app_icon.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
 import 'package:unavu_villa_project/models/getMenuItem.dart';
@@ -14,87 +15,99 @@ class MenuItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.asset(AppIcons.productImage,
-                height: AppDimensions.screenHeight / 9,
-                fit: BoxFit.cover,
-                width: double.infinity),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 6, top: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: AppDimensions.screenWidth / 4.9,
-                      child: Text(
-                        item.itemname,
-                        style: GoogleFonts.dmSans(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Text(
-                          "\₹.${item.price}",
-                          style: GoogleFonts.dmSans(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0XFFF67F20)),
-                        ),
-                        SizedBox(width: 8),
-                        Icon(Icons.circle,
-                            color: item.itemtype == 'V'
-                                ? Color(0XFF20F639)
-                                : Color(0XFFF62020),
-                            size: 10),
-                        Text(
-                          item.itemtype == 'V' ? " Veg" : " Non Veg",
+    return InkWell(
+      onTap: () {
+        final menuController = Get.find<FoodMenuController>();
+        menuController.addToCart(item);
+      },
+      child: Card(
+        elevation: 1,
+        color: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              child: Image.asset(AppIcons.productImage,
+                  height: AppDimensions.screenHeight / 7.5,
+                  fit: BoxFit.cover,
+                  width: double.infinity),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 6, top: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: AppDimensions.screenWidth / 7.5,
+                        child: Text(
+                          item.itemname,
                           style: GoogleFonts.dmSans(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: item.itemtype == 'V'
-                                ? Color(0XFF20F639)
-                                : Color(0XFFF62020),
+                            color: Colors.black,
                           ),
+                          overflow: TextOverflow
+                              .ellipsis, // This will apply the ellipsis
+                          maxLines: 1, // Limit to one line
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      final menuController = Get.find<FoodMenuController>();
-                      menuController.addToCart(item); // Add item to cart
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      backgroundColor: Colors.orange,
-                      padding: EdgeInsets.all(8),
-                    ),
-                    child: Icon(Icons.add, color: Colors.white),
+                      ),
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Text(
+                            "\₹.${item.price}",
+                            style: GoogleFonts.dmSans(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0XFFF67F20)),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(Icons.circle,
+                              color: item.itemtype == 'V'
+                                  ? Color(0XFF20F639)
+                                  : Color(0XFFF62020),
+                              size: 10),
+                          Text(
+                            item.itemtype == 'V' ? " Veg" : " Non Veg",
+                            style: GoogleFonts.dmSans(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: item.itemtype == 'V'
+                                  ? Color(0XFF20F639)
+                                  : Color(0XFFF62020),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  Container(
+                    height: 28,
+                    width: 28,
+                    margin: EdgeInsets.only(top: 16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.orange,
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 14,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

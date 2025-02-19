@@ -8,7 +8,7 @@ class DashboardProvider extends BaseProvider {
     try {
       String token = "";
       await fetchToken().then((val) {
-        token = val;
+        token = val!;
       });
       final response = await get(ApiEndpoints.allOrders,
           headers: {"Authorization": "Bearer $token"});
