@@ -197,113 +197,116 @@ class OrderCard extends StatelessWidget {
                 ),
                 Padding(
                     padding: EdgeInsets.all(padding),
-                    child: order.status == 0
-                        ? Row(
-                            children: [
-                              Expanded(
-                                child: InkWell(
-                                  onTap: () => controller
-                                      .cancelOrder(order.id.toString()),
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: isMobile ? 12 : 16),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: order.status == 1
-                                          ? Colors.green
-                                          : order.status == 2
-                                              ? Colors.amber
-                                              : Colors.red,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Add Items',
-                                        style: GoogleFonts.dmSans(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
-                                        ),
-                                      ),
+                    child: Visibility(
+                      visible: order.status == 0,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () =>
+                                  controller.cancelOrder(order.id.toString()),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: isMobile ? 12 : 16),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: order.status == 1
+                                      ? Colors.green
+                                      : order.status == 2
+                                          ? Colors.amber
+                                          : Colors.red,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Add Items',
+                                    style: GoogleFonts.dmSans(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: screenWidth * 0.02),
-                              Expanded(
-                                child: InkWell(
-                                  onTap: () => controller
-                                      .cancelOrder(order.id!.toString()),
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: isMobile ? 12 : 16),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color(0xFF2E6E76),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Pay Bill',
-                                        style: GoogleFonts.dmSans(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
-                                        ),
-                                      ),
+                            ),
+                          ),
+                          SizedBox(width: screenWidth * 0.02),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () =>
+                                  controller.cancelOrder(order.id!.toString()),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: isMobile ? 12 : 16),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color(0xFF2E6E76),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Pay Bill',
+                                    style: GoogleFonts.dmSans(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          )
-                        : order.status == 2
-                            ? Expanded(
-                                child: InkWell(
-                                  onTap: () => controller
-                                      .cancelOrder(order.id!.toString()),
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: isMobile ? 12 : 21),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color(0XFFD0A127),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Order Cancelled',
-                                        style: GoogleFonts.dmSans(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Expanded(
-                                child: InkWell(
-                                  onTap: () => controller
-                                      .cancelOrder(order.id!.toString()),
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: isMobile ? 12 : 21),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color(0XFF2D62B5),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Order Completed',
-                                        style: GoogleFonts.dmSans(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    // : order.status == 2
+                    //     ? Expanded(
+                    //         child: InkWell(
+                    //           onTap: () => controller
+                    //               .cancelOrder(order.id!.toString()),
+                    //           child: Container(
+                    //             padding: EdgeInsets.symmetric(
+                    //                 vertical: isMobile ? 12 : 21),
+                    //             decoration: BoxDecoration(
+                    //               borderRadius: BorderRadius.circular(10),
+                    //               color: Color(0XFFD0A127),
+                    //             ),
+                    //             child: Center(
+                    //               child: Text(
+                    //                 'Order Cancelled',
+                    //                 style: GoogleFonts.dmSans(
+                    //                   color: Colors.white,
+                    //                   fontWeight: FontWeight.w600,
+                    //                   fontSize: 16,
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       )
+                    //     : Expanded(
+                    //         child: InkWell(
+                    //           onTap: () => controller
+                    //               .cancelOrder(order.id!.toString()),
+                    //           child: Container(
+                    //             padding: EdgeInsets.symmetric(
+                    //                 vertical: isMobile ? 12 : 21),
+                    //             decoration: BoxDecoration(
+                    //               borderRadius: BorderRadius.circular(10),
+                    //               color: Color(0XFF2D62B5),
+                    //             ),
+                    //             child: Center(
+                    //               child: Text(
+                    //                 'Order Completed',
+                    //                 style: GoogleFonts.dmSans(
+                    //                   color: Colors.white,
+                    //                   fontWeight: FontWeight.w600,
+                    //                   fontSize: 16,
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    // )
+                    ),
               ],
             ),
           ),
