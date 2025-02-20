@@ -227,8 +227,6 @@ class FoodMenuController extends GetxController {
       // Handle the response as needed
       if (fetchedItems != null) {
         showAlertDialogOrder();
-        // Process the successful response
-        Get.snackbar("Success", "Order created successfully!");
       }
     } catch (e) {
       Get.snackbar("Error", "Failed to create order: $e");

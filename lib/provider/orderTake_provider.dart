@@ -7,7 +7,7 @@ import 'package:unavu_villa_project/shared/api_endpoints.dart';
 import 'package:unavu_villa_project/shared/shared_functions.dart';
 
 class OrderRepo extends BaseProvider {
-  Future<OrderResponseModel> createOrder({required OrderModel order}) async {
+  Future<dynamic> createOrder({required OrderModel order}) async {
     try {
       String? token = await fetchToken();
       if (order == null) {
@@ -62,7 +62,7 @@ class OrderRepo extends BaseProvider {
       if (response.hasError) {
         return Future.error(response.statusText ?? "Something went wrong.");
       } else {
-        return OrderResponseModel.fromJson(response.body); // Parse the response
+        return response.body; // Parse the response
       }
     } catch (exception) {
       return Future.error("Order creation failed: ${exception.toString()}");

@@ -217,14 +217,14 @@ class OrderCard extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           controller.onAdditemSelected(true);
-                          InvoicePay payBill = InvoicePay(
-                            totalAmount: subTotal(),
-                            discountAmount: order.discountamount,
-                            grandTotal: order.totalamount,
-                            roundOff: roundOff(order.discountamount),
-                            tax: tax(),
-                          );
-                          controller.addItemBill(payBill);
+                          // InvoicePay payBill = InvoicePay(
+                          //   totalAmount: subTotal(),
+                          //   discountAmount: order.discountamount,
+                          //   grandTotal: order.totalamount,
+                          //   roundOff: roundOff(order.discountamount),
+                          //   tax: tax(),
+                          // );
+                          // controller.addItemBill(payBill);
                           Get.toNamed('/addorder');
                         },
                         child: Container(
