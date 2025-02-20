@@ -29,6 +29,11 @@ class FoodMenuController extends GetxController {
   RxString selectTable = ''.obs;
   RxString selectTableId = ''.obs;
   var BranchtableDataList = <TableItem>[].obs;
+  var nameErrorText = ''.obs;
+  var discountController = TextEditingController();
+  var discountPercentage = 0.0.obs;
+  var discountAmount = 0.0.obs;
+  var countNumberPeople = ''.obs;
   List<String> tableDataList = ["Option 1", "Option 2", "Option 3"];
   double get subTotal {
     return cartItems.fold(0.0, (sum, item) {
@@ -64,10 +69,6 @@ class FoodMenuController extends GetxController {
         // Calculate the tax based on the extracted rate and item price
         double itemTax = itemPrice * (taxRate / 100) * quantity;
 
-        // Debugging output
-        print(
-            "Item: ${item.itemname}, Price: $itemPrice, Tax Rate: $taxRate%, Tax: $itemTax");
-
         // Add the individual item tax to the total sum
         return sum + itemTax;
       } catch (e) {
@@ -77,8 +78,25 @@ class FoodMenuController extends GetxController {
     });
   }
 
-  double get roundOff => (subTotal + tax) - (subTotal + tax).floor();
-  double get total => (subTotal + tax).floor().toDouble();
+  // Discount //
+  void updateDiscount(String value) {
+    double parsedValue = double.tryParse(value) ?? 0.0;
+    discountPercentage.value =
+        parsedValue.clamp(0, 100); // Ensure valid percentage
+    update(); // Update UI
+  }
+
+  double get discountAmountall =>
+      (subTotal + tax) * (discountPercentage.value / 100);
+
+// Calculate Round Off
+  double get roundOff =>
+      (subTotal + tax - discountAmount.value) -
+      (subTotal + tax - discountAmount.value).floor();
+
+// Calculate Total
+  double get total =>
+      ((subTotal + tax - discountAmountall) + roundOff).floor().toDouble();
 
 // Function to add item to cart
   void addToCart(MenuItem item) {
@@ -130,12 +148,26 @@ class FoodMenuController extends GetxController {
     selectTable.value = value;
   }
 
+  void checkErrorMessage(String value) {
+    if (value.isEmpty) {
+      nameErrorText.value = "Please enter customar name.";
+    } else {
+      nameErrorText.value = "";
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
     loadFloor();
     loadMenuItems();
     loadCatMenuItems();
+  }
+
+  @override
+  void onClose() {
+    discountController.dispose();
+    super.onClose();
   }
 
   void loadMenuItems() async {
@@ -246,6 +278,7 @@ class FoodMenuController extends GetxController {
   }
 
   void showAlertDialogOrder() {
+    takeOrder.value = true;
     Get.defaultDialog(
       titleStyle: AppTextStyles.heading,
       middleTextStyle: AppTextStyles.icontext,
@@ -255,6 +288,21 @@ class FoodMenuController extends GetxController {
       textConfirm: "OK",
       onConfirm: () {
         Get.toNamed('/dashboard');
+      },
+    );
+  }
+
+  void showAlertDialogOrderCancel() {
+    takeOrder.value = true;
+    Get.defaultDialog(
+      titleStyle: AppTextStyles.heading,
+      middleTextStyle: AppTextStyles.icontext,
+      buttonColor: AppColors.orange,
+      title: "Order Upadte",
+      middleText: "Order Cancelled ",
+      textConfirm: "OK",
+      onConfirm: () {
+        Get.back();
       },
     );
   }

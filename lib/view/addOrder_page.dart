@@ -210,9 +210,14 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
             : TextField(
                 controller:
                     TextEditingController(text: menuController.inputText.value),
-                keyboardType: TextInputType.number, // Allow only number input
+                keyboardType: TextInputType.number,
+                style: GoogleFonts.dmSans(
+                  fontSize: 16,
+                  color: AppColors.iconColor,
+                  fontWeight: FontWeight.w500,
+                ), // Allow only number input
                 decoration: InputDecoration(
-                  hintText: "Enter Table  count",
+                  hintText: "Enter People Number",
                   hintStyle: AppTextStyles.heading.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
@@ -224,7 +229,7 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
                 onChanged: (value) {
                   // Try to parse the input to an integer
                   int? number = int.tryParse(value);
-
+                  menuController.countNumberPeople.value = value.toString();
                   // Check if the number is valid and within the range
                   if (number != null && (number < 1 || number > 10)) {
                     // Show an alert dialog if the number is out of range

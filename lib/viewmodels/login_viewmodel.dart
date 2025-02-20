@@ -16,9 +16,11 @@ class LoginViewModel extends GetxController {
   var selectedRole = ''.obs; // Observable for selected role
   var selectedBranch = ''.obs; // Observable for selected branch
   var captainName = ''.obs; // Observable for captain name
+  var waiterName = ''.obs; // Observable for captain name
   var selectTab = 0; // Current selected tab for roles
   var branchselectTab = 1; // Current selected tab for branches
   var selectedBranchId = ''.obs;
+  var captainID = ''.obs;
   // Sample data for roles and branches
   var RoletableDataList = ["Una Villa Restaurant & Bakery,Nungambakkam"];
   var BranchtableDataList = <Item>[].obs;
@@ -39,9 +41,15 @@ class LoginViewModel extends GetxController {
         username: usernameController.value, password: passwordController.value);
 
     try {
-      final val = await authRepo.doLogin(request: loginRequest);
+      final val = await authRepo.doLogin(usernameController.value,
+          passwordController.value, int.parse(selectedBranchId.value));
 
-      captainName.value = val.data!.userId.toString() ?? "";
+      if (val.data!.role.toLowerCase() == 'Captain'.toLowerCase()) {
+        captainName.value = val.data!.userId.toString() ?? "";
+      } else if (val.data!.role.toLowerCase() == 'Waiter'.toLowerCase()) {
+        waiterName.value = val.data!.userId.toString() ?? "";
+      }
+      captainID.value = val.data!.id.toString();
       String? token = val.accessToken; // Get the token from the response
 
       await storeToken(token!);

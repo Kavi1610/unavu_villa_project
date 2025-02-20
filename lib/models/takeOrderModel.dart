@@ -2,7 +2,7 @@ class OrderModel {
   final int ordertype;
   final int status;
   final int tableid;
-  final String numberofpeople;
+  final String numberofpeople; // Changed to int
   final String captainname;
   final String waitername;
   final String customername;
@@ -15,6 +15,12 @@ class OrderModel {
   final int orderBy;
   final int paymentMethod;
   final String knotes;
+  final int branchid; // Added
+  final int floorid; // Added
+  final int printerid; // Added
+  final double discountamount; // Added
+  final double totalamount; // Added
+  final double grandtotal; // Added
 
   OrderModel({
     required this.ordertype,
@@ -33,6 +39,12 @@ class OrderModel {
     required this.orderBy,
     required this.paymentMethod,
     required this.knotes,
+    required this.branchid, // Added
+    required this.floorid, // Added
+    required this.printerid, // Added
+    required this.discountamount, // Added
+    required this.totalamount, // Added
+    required this.grandtotal, // Added
   });
 }
 
@@ -43,6 +55,9 @@ class OrderItemModel {
   final double price;
   final bool comp;
   final double total;
+  final String tax_type; // Added
+  final int status; // Added
+  final String statustime; // Added
   final bool isDeleted;
 
   OrderItemModel({
@@ -52,6 +67,9 @@ class OrderItemModel {
     required this.price,
     required this.comp,
     required this.total,
+    required this.tax_type, // Added
+    required this.status, // Added
+    required this.statustime, // Added
     required this.isDeleted,
   });
 }

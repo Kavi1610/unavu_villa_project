@@ -6,7 +6,8 @@ import 'package:unavu_villa_project/shared/api_endpoints.dart';
 import '../models/loginModel.dart';
 
 class AuthRepo extends BaseProvider {
-  Future<LoginResponseModel> doLogin({required UserModel request}) async {
+  Future<LoginResponseModel> doLogin(
+      String userName, String password, int floorID) async {
     try {
       if (request == null) {
         return Future.error("Invalid login request.");
@@ -15,9 +16,9 @@ class AuthRepo extends BaseProvider {
       // Create the request body as a Map
       final Map<String, dynamic> requestBody = {
         "branchid": 101,
-        "floorid": 1,
-        "userid": "admin1",
-        "password": "admin"
+        "floorid": floorID,
+        "userid": userName,
+        "password": password
       };
 
       final response = await post(

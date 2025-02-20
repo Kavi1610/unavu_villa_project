@@ -189,10 +189,10 @@ class LoginPage extends StatelessWidget {
                                 color: Color(0XFFC2C2C2),
                               ),
                             ),
-                            value: controller.selectedBranch.value.isEmpty
+                            value: controller.selectedBranchId.value.isEmpty
                                 ? null
                                 : controller
-                                    .selectedBranch.value, // Corrected value
+                                    .selectedBranchId.value, // Corrected value
                             isExpanded: true,
                             icon: Icon(Icons.arrow_forward_ios, size: 16),
                             underline: SizedBox(),

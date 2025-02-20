@@ -50,20 +50,42 @@ class OrderDetailsWidget extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),
                     child: TextField(
+                      style: GoogleFonts.dmSans(
+                        fontSize: 12,
+                        color: AppColors.iconColor,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        suffixText: "%",
+                        suffixStyle: GoogleFonts.dmSans(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        hintText: "Write your order note here...",
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+                        hintStyle: GoogleFonts.dmSans(
+                            fontSize: 12, color: Colors.grey),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: AppColors.textFiled, width: 1),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: AppColors.textFiled, width: 1),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: AppColors.textFiled, width: 1),
+                        ),
+                      ),
                       onChanged: (value) {
                         menuController.orderNoteValue(value);
                       },
-                      decoration: InputDecoration(
-                        hintText: "Write your order note here...",
-                        hintStyle: GoogleFonts.dmSans(
-                            fontSize: 12, color: AppColors.textFiled),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                                width: 1, color: AppColors.textFiled1)),
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-                      ),
                       maxLines: 2,
                     ),
                   ),
@@ -74,30 +96,83 @@ class OrderDetailsWidget extends StatelessWidget {
                   Obx(() => totalRow(
                       title: 'Total Amount',
                       value:
-                          '\$${menuController.subTotal.toStringAsFixed(2)}')),
+                          '\₹.${menuController.subTotal.toStringAsFixed(2)}')),
                   SizedBox(
                     height: 4,
                   ),
                   Obx(() => totalRow(
                       title: 'Tax (10%)',
-                      value: '\$${menuController.tax.toStringAsFixed(2)}')),
+                      value: '\₹.${menuController.tax.toStringAsFixed(2)}')),
                   SizedBox(
                     height: 4,
                   ),
-                  totalRow(title: 'Discount', value: '%'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Discount",
+                          style: GoogleFonts.dmSans(
+                              fontSize: 14, color: Colors.grey)),
+                      SizedBox(
+                        height: 30,
+                        width: 90, // Adjust the width as needed
+                        child: TextField(
+                          controller: menuController.discountController,
+                          keyboardType: TextInputType.number,
+                          style: GoogleFonts.dmSans(
+                            fontSize: 16,
+                            color: AppColors.iconColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          decoration: InputDecoration(
+                            suffixText: "%",
+                            suffixStyle: GoogleFonts.dmSans(
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            hintStyle: GoogleFonts.dmSans(
+                                fontSize: 12, color: Colors.grey),
+                            contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                  color: AppColors.textFiled, width: 1),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            menuController.updateDiscount(value);
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                  totalRow(
+                      title: 'Discount Amount',
+                      value:
+                          '\₹.${menuController.discountAmountall.toStringAsFixed(2)}'),
                   SizedBox(
                     height: 4,
                   ), // Placeholder for discount
                   Obx(() => totalRow(
                       title: 'Round off',
-                      value: '\$${menuController.roundOff.toStringAsFixed(2)}',
+                      value: '\₹.${menuController.roundOff.toStringAsFixed(2)}',
                       isHighlighted: true)),
                   SizedBox(
                     height: 4,
                   ),
                   Obx(() => totalRow(
                       title: 'Grand Total',
-                      value: '\$${menuController.total.toStringAsFixed(2)}',
+                      value: '\₹.${menuController.total.toStringAsFixed(2)}',
                       isTotal: true)),
                   SizedBox(
                     height: 21,
@@ -218,7 +293,7 @@ class CartItem extends StatelessWidget {
                   double totalPrice = itemPrice * quantity;
 
                   // Format the total price as a string with two decimal places
-                  String formattedPrice = "\$${totalPrice.toStringAsFixed(2)}";
+                  String formattedPrice = "\₹.${totalPrice.toStringAsFixed(2)}";
 
                   return Text(
                     formattedPrice,

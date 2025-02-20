@@ -7,15 +7,9 @@ import 'package:unavu_villa_project/shared/shared_functions.dart';
 class FloorMasterProvider extends BaseProvider {
   Future<FloorMasterResponse> fetchFloorMasterList() async {
     try {
-      String token = "";
-      await fetchToken().then((val) {
-        token = val!;
-      });
-
       // Make the API call
       final response = await get(
         ApiEndpoints.floorMaster,
-        headers: {"Authorization": "Bearer $token"},
       );
 
       // Check for a successful response
