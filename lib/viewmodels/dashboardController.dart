@@ -181,7 +181,6 @@ class DashboardController extends GetxController {
 
       Get.back();
     } catch (e) {
-      print("The values Arun :$e");
       Get.snackbar("Error", "Failed to load menu items: $e");
     } finally {
       isLoading.value = false;

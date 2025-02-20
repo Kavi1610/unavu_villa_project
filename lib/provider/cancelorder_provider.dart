@@ -24,7 +24,7 @@ class CancelBillProvider extends BaseProvider {
       if (response.hasError) {
         return Future.error(response.statusText ?? "Something went wrong.");
       } else {
-        return OrderResponseModel.fromJson(response.body); // Parse the response
+        return response.body; // Parse the response
       }
     } catch (exception) {
       return Future.error("Order creation failed: ${exception.toString()}");

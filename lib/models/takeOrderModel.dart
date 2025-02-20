@@ -55,7 +55,7 @@ class OrderItemModel {
   final String itemname;
   final int quantity;
   final double price;
-  final RxBool comp;
+  final bool comp;
   final double total;
   final String tax_type; // Added
   final int status; // Added

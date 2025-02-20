@@ -222,14 +222,17 @@ class FoodMenuController extends GetxController {
     try {
       // Call the createOrder method from OrderRepo
       final fetchedItems = await OrderRepo().createOrder(order: orderDetail);
+      showAlertDialogOrder();
 
       // Handle the response as needed
       if (fetchedItems != null) {
+        showAlertDialogOrder();
         // Process the successful response
         Get.snackbar("Success", "Order created successfully!");
       }
     } catch (e) {
       Get.snackbar("Error", "Failed to create order: $e");
+      print("The arun value is:$e");
     } finally {
       isLoading.value = false;
     }

@@ -88,7 +88,7 @@ class UserInformation extends StatelessWidget {
                           0.0, // Use tryParse
                       total: (double.tryParse(cartItem.price) ?? 0.0) *
                           (menuController.itemQuantities[cartItem] ?? 1),
-                      comp: cartItem.isChecked,
+                      comp: cartItem.isChecked.value == false ? false : true,
                       isDeleted: false,
                       status: 0,
                       statustime: 0,
@@ -97,13 +97,15 @@ class UserInformation extends StatelessWidget {
                   }
 
                   // Create the order request using values from the controllers
+                  // Create the order request using values from the controllers
                   OrderModel orderRequest = OrderModel(
                     address: addressController.text,
                     ordertype: 0,
                     status: 0,
                     tableid: int.tryParse(menuController.selectTableId.value) ??
                         0, // Use tryParse
-                    numberofpeople: menuController.countNumberPeople.value,
+                    numberofpeople: menuController.countNumberPeople.value
+                        .toString(), // Ensure this is a String
                     captainname: logmenuController.captainName.value.isNotEmpty
                         ? logmenuController.waiterName.value
                         : "",
@@ -117,23 +119,24 @@ class UserInformation extends StatelessWidget {
                     customerGSTIN: gstController.text,
                     knotes: menuController.orderNote.value,
                     items: orderItem,
-                    orderBy:
-                        int.tryParse(logmenuController.captainID.toString()) ??
-                            0, // Use tryParse
+                    orderBy: int.tryParse(
+                            logmenuController.captainID.value.toString()) ??
+                        0, // Use .value
                     paymentMethod: 0,
                     branchid: 101,
-                    discountamount: menuController.discountAmountall,
-                    floorid: int.tryParse(
-                            logmenuController.selectedBranchId.toString()) ??
-                        0, // Use tryParse
-                    grandtotal: menuController.total,
+                    discountamount:
+                        menuController.discountAmountall, // Use .value
+                    floorid: int.tryParse(logmenuController
+                            .selectedBranchId.value
+                            .toString()) ??
+                        0, // Use .value
+                    grandtotal: menuController.total, // Use .value
                     printerid: 0,
-                    totalamount: menuController.subTotal,
+                    totalamount: menuController.subTotal, // Use .value
                   );
 
                   // Call the createOrder method
                   menuController.createOrder(orderRequest);
-                  menuController.showAlertDialogOrder();
                 }
               },
               style: ElevatedButton.styleFrom(
