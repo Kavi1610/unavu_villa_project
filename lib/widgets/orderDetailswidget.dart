@@ -5,13 +5,13 @@ import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/app_icon.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
 import 'package:unavu_villa_project/models/getMenuItem.dart';
-import 'package:unavu_villa_project/models/menuItem.dart';
-import 'package:unavu_villa_project/models/takeOrderModel.dart';
+import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
 import 'package:unavu_villa_project/viewmodels/menuController.dart';
 import 'package:unavu_villa_project/widgets/userInformation.dart';
 
 class OrderDetailsWidget extends StatelessWidget {
   final FoodMenuController menuController = Get.find<FoodMenuController>();
+  final DashboardController Controller = Get.find<DashboardController>();
 
   @override
   Widget build(BuildContext context) {
@@ -178,28 +178,32 @@ class OrderDetailsWidget extends StatelessWidget {
                     height: 21,
                   ),
                   // Order Now Button
-                  Align(
-                    alignment: Alignment.center,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        menuController.takeOrderNow();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 21),
-                      ),
-                      child: Text(
-                        "Order now",
-                        style: GoogleFonts.dmSans(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                  Obx(
+                    () => Align(
+                      alignment: Alignment.center,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          menuController.takeOrderNow();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 21),
+                        ),
+                        child: Text(
+                          !Controller.addItemcheck.value
+                              ? "Order now"
+                              : "Order Update",
+                          style: GoogleFonts.dmSans(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -273,8 +277,8 @@ class CartItem extends StatelessWidget {
               children: [
                 Text(item.itemname,
                     style: GoogleFonts.dmSans(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
                         color: Colors.black)),
                 SizedBox(height: 2),
                 Text("Price",
@@ -307,32 +311,73 @@ class CartItem extends StatelessWidget {
               ],
             ),
           ),
-
+          SizedBox(
+            height: 6,
+          ),
           // Quantity Controls
-          Row(
+          Column(
             children: [
-              // Decrease Button
-              QuantityButton(
-                icon: Icons.remove,
-                onPressed: () => menuController.decrement(item),
-                isDisabled: (menuController.itemQuantities[item] ?? 1) <= 1,
+              SizedBox(
+                height: 5,
               ),
-              SizedBox(width: 6),
+              Row(
+                children: [
+                  // Decrease Button
+                  QuantityButton(
+                    icon: Icons.remove,
+                    onPressed: () => menuController.decrement(item),
+                  ),
+                  SizedBox(width: 6),
 
-              // Quantity Display
-              Obx(() => Text(
-                    menuController.itemQuantities[item]?.toString() ?? "0",
+                  // Quantity Display
+                  Obx(() => Text(
+                        menuController.itemQuantities[item]?.toString() ?? "0",
+                        style: GoogleFonts.dmSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      )),
+                  SizedBox(width: 6),
+
+                  // Increase Button
+                  QuantityButton(
+                    icon: Icons.add,
+                    onPressed: () => menuController.increment(item),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 6,
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Obx(
+                    () => Checkbox(
+                      value: item.isChecked.value,
+                      onChanged: (val) {
+                        item.isChecked.value = val!;
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                        side: BorderSide(
+                            width: 1.0,
+                            color: AppColors.textFiled), // Reduce border width
+                      ),
+                      visualDensity: VisualDensity.compact, // Reduce size
+                      activeColor: AppColors
+                          .orange, // Change checkbox color Change checkbox color
+                    ),
+                  ),
+                  Text(
+                    "Comp",
                     style: GoogleFonts.dmSans(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                  )),
-              SizedBox(width: 6),
-
-              // Increase Button
-              QuantityButton(
-                icon: Icons.add,
-                onPressed: () => menuController.increment(item),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.secondary,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -354,8 +399,8 @@ class QuantityButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 32,
-      width: 32,
+      height: 28,
+      width: 28,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: isDisabled ? Colors.grey[300] : AppColors.textFiled1,

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/app_textstyle.dart';
 import 'package:unavu_villa_project/core/enums.dart';
+import 'package:unavu_villa_project/models/addItempayDetail_model.dart';
 import 'package:unavu_villa_project/models/getMenuItem.dart';
 import 'package:unavu_villa_project/models/orderDetaul.dart';
 import 'package:unavu_villa_project/models/order_list_response_model.dart';
@@ -24,7 +25,14 @@ class DashboardController extends GetxController {
   RxInt selectedFilterIndex = 0.obs;
   RxString selectedFiltermenu = ''.obs;
   RxString selectedCategory = ''.obs;
-  RxList menuItems = <MenuItem>[].obs;
+  var paymentMode = 0.obs;
+  var nvoicePay = InvoicePay(
+    totalAmount: 0.0,
+    tax: 0.0,
+    discountAmount: 0.0,
+    roundOff: 0.0,
+    grandTotal: 0.0,
+  ).obs;
   var selectedPrinter = ''.obs;
   List<String> printers = ['Dine In'];
   Rx<DeviceType> deviceType = DeviceType.tablet.obs;
@@ -33,7 +41,7 @@ class DashboardController extends GetxController {
   ReportResponseModel reportData = ReportResponseModel();
   RxBool isLoading = true.obs;
   List<String> get filterOptions => ['Dine In'];
-
+  var addItemcheck = false.obs;
   List<String> get filterOrderScreen => [
         'All',
         'Veg',
@@ -149,14 +157,28 @@ class DashboardController extends GetxController {
     selectedCategory.value = category;
   }
 
+  void onAdditemSelected(bool ichecked) {
+    addItemcheck.value = ichecked;
+    print("The value is:${addItemcheck.value}");
+  }
+
+  void addItemBill(InvoicePay billData) {
+    nvoicePay.value = billData;
+  }
+
+  void addPaymentMode(int bill) {
+    paymentMode.value = bill;
+  }
+
   void setSelectedTabIndex(int index) {
     selectedTabIndex.value = index;
     debugPrint("thee setter value is : $selectedTabIndex");
   }
 
-  void generateBillload(Bill bill) async {
+  void generateBillload(Map<String, dynamic> bill) async {
     try {
       final fetchedItems = await GenerateBillProvider().billOrder(order: bill);
+
       Get.back();
     } catch (e) {
       print("The values Arun :$e");
@@ -166,7 +188,7 @@ class DashboardController extends GetxController {
     }
   }
 
-  void cancelBillload(Bill bill) async {
+  void cancelBillload(Map<String, dynamic> bill) async {
     try {
       final fetchedItems = await CancelBillProvider().billOrder(order: bill);
       fetchAllOrders();

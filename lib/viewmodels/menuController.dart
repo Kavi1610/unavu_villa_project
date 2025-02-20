@@ -28,6 +28,7 @@ class FoodMenuController extends GetxController {
   final RxString inputText = ''.obs;
   RxString selectTable = ''.obs;
   RxString selectTableId = ''.obs;
+  var isChecked = false.obs;
   var BranchtableDataList = <TableItem>[].obs;
   var nameErrorText = ''.obs;
   var discountController = TextEditingController();
@@ -37,16 +38,21 @@ class FoodMenuController extends GetxController {
   List<String> tableDataList = ["Option 1", "Option 2", "Option 3"];
   double get subTotal {
     return cartItems.fold(0.0, (sum, item) {
+      if (item.isChecked.value) return sum; // ✅ Skip unchecked items
+
       // Ensure item.price is a valid number
       double itemPrice =
           double.tryParse(item.price) ?? 0.0; // Default to 0.0 if parsing fails
       int quantity = itemQuantities[item] ?? 1; // Default to 1 if not found
+
       return sum + (itemPrice * quantity);
     });
   }
 
   double get tax {
     return cartItems.fold(0.0, (sum, item) {
+      if (item.isChecked.value) return sum; // ✅ Skip unchecked items
+
       try {
         // Assuming item.dineintax is a string like "TAX_5"
         String taxRateString =

@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class OrderModel {
   final int ordertype;
   final int status;
@@ -53,7 +55,7 @@ class OrderItemModel {
   final String itemname;
   final int quantity;
   final double price;
-  final bool comp;
+  final RxBool comp;
   final double total;
   final String tax_type; // Added
   final int status; // Added

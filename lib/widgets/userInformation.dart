@@ -88,7 +88,7 @@ class UserInformation extends StatelessWidget {
                           0.0, // Use tryParse
                       total: (double.tryParse(cartItem.price) ?? 0.0) *
                           (menuController.itemQuantities[cartItem] ?? 1),
-                      comp: false,
+                      comp: cartItem.isChecked,
                       isDeleted: false,
                       status: 0,
                       statustime: 0,

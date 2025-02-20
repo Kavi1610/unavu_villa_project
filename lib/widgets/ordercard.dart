@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/enums.dart';
+import 'package:unavu_villa_project/models/addItempayDetail_model.dart';
 import 'package:unavu_villa_project/models/order_list_response_model.dart';
 import 'package:unavu_villa_project/models/paybill_model.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
+import 'package:unavu_villa_project/viewmodels/menuController.dart';
 import 'package:unavu_villa_project/widgets/order_itemRow.dart';
 import 'package:unavu_villa_project/widgets/payment_widget.dart';
 import '../models/orderDetaul.dart';
@@ -213,7 +215,18 @@ class OrderCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          controller.onAdditemSelected(true);
+                          InvoicePay payBill = InvoicePay(
+                            totalAmount: subTotal(),
+                            discountAmount: order.discountamount,
+                            grandTotal: order.totalamount,
+                            roundOff: roundOff(order.discountamount),
+                            tax: tax(),
+                          );
+                          controller.addItemBill(payBill);
+                          Get.toNamed('/addorder');
+                        },
                         child: Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 12, vertical: isMobile ? 10 : 12),
@@ -239,37 +252,63 @@ class OrderCard extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          Bill bill = Bill(
-                            address: order.address!,
-                            branchId: order.branchid!,
-                            captainName: order.captainname!,
-                            createdAt: order.createdAt!,
-                            customerMobile: order.customemobile!,
-                            customerName: order.customername!,
-                            discountAmount: order.discountamount!,
-                            floorId: order.floorid!,
-                            grandTotal: order.grandtotal!,
-                            id: order.id!,
-                            isDeleted: order.isDeleted!,
-                            location: order.location!,
-                            numberOfPeople: order.numberofpeople!,
-                            orderBy: order.orderBy!,
-                            orderId: order.orderid!,
-                            orderType: order.ordertype!,
-                            paymentMethod: 0,
-                            printerId: 0,
-                            status: 2,
-                            tableId: order.tableid!,
-                            totalAmount: order.totalamount!,
-                            updatedAt: order.updatedAt!,
-                            waiterName: order.waitername!,
-                            billNo: order.billno!,
-                            customerGSTIN: order.customerGSTIN!,
-                            deletedAt: order.deletedAt!,
-                            email: order.email!,
-                            notes: order.knotes!,
-                          );
-                          controller.cancelBillload(bill);
+                          final Map<String, dynamic> requestBody = {
+                            "email": order.email ?? "",
+                            "tableid": int.tryParse(
+                                    order.tableid?.toString() ?? '0') ??
+                                0, // Prevent errors
+                            "orderid": int.tryParse(
+                                    order.orderid?.toString() ?? '0') ??
+                                0,
+                            "status": 2,
+                            "updated_at": order.updatedAt ??
+                                DateTime.now().toIso8601String(),
+                            "branchid": int.tryParse(
+                                    order.branchid?.toString() ?? '0') ??
+                                0,
+                            "location": order.location ?? "",
+                            "ordertype": int.tryParse(
+                                    order.ordertype?.toString() ?? '0') ??
+                                0,
+                            "floorid": int.tryParse(
+                                    order.floorid?.toString() ?? '0') ??
+                                0,
+                            "address": order.address ?? "",
+                            "deleted_at": order.deletedAt?.toString() ??
+                                null, // Keep null if needed
+                            "numberofpeople": order.numberofpeople
+                                .toString(), // Convert to string explicitly
+                            "printerid": 0,
+                            "customerGSTIN": order.customerGSTIN ?? "",
+                            "is_deleted": order.isDeleted ?? false,
+                            "discountamount": double.tryParse(
+                                    order.discountamount?.toString() ??
+                                        '0.0') ??
+                                0.0,
+                            "captainname": order.captainname ?? "",
+                            "order_by": int.tryParse(
+                                    order.orderBy?.toString() ?? '0') ??
+                                0,
+                            "paymentmethod": 0,
+                            "totalamount": double.tryParse(
+                                    order.totalamount?.toString() ?? '0.0') ??
+                                0.0,
+                            "waitername": order.waitername ?? "",
+                            "customername": order.customername ?? "",
+                            "grandtotal": double.tryParse(
+                                    order.grandtotal?.toString() ?? '0.0') ??
+                                0.0,
+                            "knotes": order.knotes ?? "",
+                            "customermobile": order.customemobile ??
+                                "", // Fixed typo from 'customemobile'
+                            "id":
+                                int.tryParse(order.id?.toString() ?? '0') ?? 0,
+                            "billno": order.billno?.toString() ?? "",
+                            "created_at": order.createdAt ??
+                                DateTime.now().toIso8601String(),
+                          };
+
+                          controller.cancelBillload(requestBody);
 
                           controller.cancelOrder(order.id.toString());
                         },
@@ -294,37 +333,7 @@ class OrderCard extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          Bill bill = Bill(
-                            address: order.address!,
-                            branchId: order.branchid!,
-                            captainName: order.captainname!,
-                            createdAt: order.createdAt!,
-                            customerMobile: order.customemobile!,
-                            customerName: order.customername!,
-                            discountAmount: order.discountamount!,
-                            floorId: order.floorid!,
-                            grandTotal: order.grandtotal!,
-                            id: order.id!,
-                            isDeleted: order.isDeleted!,
-                            location: order.location!,
-                            numberOfPeople: order.numberofpeople!,
-                            orderBy: order.orderBy!,
-                            orderId: order.orderid!,
-                            orderType: order.ordertype!,
-                            paymentMethod: 0,
-                            printerId: 1,
-                            status: 4,
-                            tableId: order.tableid!,
-                            totalAmount: order.totalamount!,
-                            updatedAt: order.updatedAt!,
-                            waiterName: order.waitername!,
-                            billNo: order.billno!,
-                            customerGSTIN: order.customerGSTIN!,
-                            deletedAt: order.deletedAt!,
-                            email: order.email!,
-                            notes: order.knotes!,
-                          );
-                          Get.dialog(OrderPaymentPage(bills: bill));
+                          Get.dialog(OrderPaymentPage(order: order));
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
@@ -402,5 +411,59 @@ class OrderCard extends StatelessWidget {
         );
       },
     );
+  }
+
+  double tax() {
+    return order.items!.fold(0.0, (sum, item) {
+      //if (item.isChecked.value) return sum; // ✅ Skip unchecked items
+
+      try {
+        // Assuming item.dineintax is a string like "TAX_5"
+        String taxRateString =
+            item.taxType ?? ''; // Default to empty string if null
+        double taxRate = 0.0;
+
+        // Extract the numeric part of the tax rate
+        if (taxRateString.startsWith("TAX_")) {
+          String rateString =
+              taxRateString.substring(4); // Get the part after "TAX_"
+          taxRate = double.tryParse(rateString) ??
+              0.0; // Convert to double, default to 0.0 if parsing fails
+        }
+
+        // Safely parse item.price
+        double itemPrice = double.tryParse(item.price) ??
+            0.0; // Default to 0.0 if parsing fails
+        int quantity =
+            int.parse(item.quantity) ?? 1; // Default to 1 if not found
+
+        // Calculate the tax based on the extracted rate and item price
+        double itemTax = itemPrice * (taxRate / 100) * quantity;
+
+        // Add the individual item tax to the total sum
+        return sum + itemTax;
+      } catch (e) {
+        print("Error calculating tax for item ${item.itemname}: $e");
+        return sum; // Return sum unchanged in case of error
+      }
+    });
+  }
+
+  double subTotal() {
+    return order.items!.fold(0.0, (sum, item) {
+      //if (item.isChecked.value) return sum; // ✅ Skip unchecked items
+
+      // Ensure item.price is a valid number
+      double itemPrice =
+          double.tryParse(item.price) ?? 0.0; // Default to 0.0 if parsing fails
+      int quantity = int.parse(item.quantity) ?? 1; // Default to 1 if not found
+
+      return sum + (itemPrice * quantity);
+    });
+  }
+
+  double roundOff(double disValue) {
+    return (subTotal() + tax() - disValue) -
+        (subTotal() + tax() - disValue).floor();
   }
 }

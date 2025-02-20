@@ -230,7 +230,7 @@ class DashboardView extends StatelessWidget {
                                               crossAxisCount: isMobile ? 1 : 3,
                                               crossAxisSpacing: 12,
                                               mainAxisSpacing: 12,
-                                              childAspectRatio: 5 / 8.3),
+                                              childAspectRatio: 5.2 / 8.3),
                                       itemCount: controller
                                           .orderList.data!.items!.length,
                                       itemBuilder: (context, index) {
