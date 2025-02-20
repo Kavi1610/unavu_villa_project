@@ -82,27 +82,19 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
                     },
                   ),
                   _buildNavButton(
-                    'Add Order',
-                    'assets/note.png',
+                    'Reports',
+                    'assets/clock.png',
                     () {
                       onClick!(1);
                       controller.setSelectedTabIndex(1);
                     },
                   ),
                   _buildNavButton(
-                    'Reports',
-                    'assets/clock.png',
-                    () {
-                      onClick!(2);
-                      controller.setSelectedTabIndex(2);
-                    },
-                  ),
-                  _buildNavButton(
                     'Menu Availability',
                     'assets/receipt.png',
                     () {
-                      onClick!(3);
-                      controller.setSelectedTabIndex(3);
+                      onClick!(2);
+                      controller.setSelectedTabIndex(2);
                     },
                   ),
                 ],

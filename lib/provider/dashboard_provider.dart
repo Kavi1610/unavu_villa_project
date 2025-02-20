@@ -7,10 +7,8 @@ import 'package:unavu_villa_project/shared/shared_functions.dart';
 class DashboardProvider extends BaseProvider {
   Future<OrderListResponse> fetchOrderList(String id) async {
     try {
-      String token = "";
-      await fetchToken().then((val) {
-        token = val!;
-      });
+      String? token = await fetchToken();
+
       final response = await get(
           "${ApiEndpoints.allOrders}?branchid=$id&page=1&size=50",
           headers: {"Authorization": "Bearer $token"});

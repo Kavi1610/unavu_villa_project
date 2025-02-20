@@ -610,6 +610,8 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
               Border(right: BorderSide(color: AppColors.borderclr, width: 1)),
         ),
         child: ListView.separated(
+          shrinkWrap: true,
+
           padding: EdgeInsets.all(6), // Optional: Add padding around the list
           itemCount: menuCategory.length,
           separatorBuilder: (context, index) =>

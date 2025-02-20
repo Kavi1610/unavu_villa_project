@@ -28,57 +28,54 @@ class OrderItemRow extends StatelessWidget {
     controller.updateDeviceType(context);
     final isMobile = controller.deviceType.value == DeviceType.mobile;
 
-    double textSize = isMobile ? 16.0 : 18.0;
-    double iconSize = isMobile ? 24.0 : 36.0;
+    double textSize = isMobile ? 10.0 : 12.0;
+    double iconSize = isMobile ? 16.0 : 20.0;
 
-    return Padding(
-      padding: EdgeInsets.only(bottom: 8.0, top: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            item.quantity.toString(),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          item.quantity.toString(),
+          style: GoogleFonts.dmSans(
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+            fontSize: textSize,
+          ),
+        ),
+        SizedBox(width: 16.0),
+        Expanded(
+          child: Text(
+            item.itemname!,
             style: GoogleFonts.dmSans(
               color: Colors.black,
               fontWeight: FontWeight.w400,
               fontSize: textSize,
             ),
           ),
-          SizedBox(width: 16.0),
-          Expanded(
-            child: Text(
-              item.itemname!,
-              style: GoogleFonts.dmSans(
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
-                fontSize: textSize,
-              ),
-            ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 16.0),
+          child: IconButton(
+              onPressed: () {
+                if (item.status != 1) {
+                  onMarkDelivered(orderId, index, 4);
+                }
+              },
+              icon: Icon(
+                item.status == 1 ? Icons.check_circle : Icons.cancel,
+                color: item.status == 1 ? AppColors.green : AppColors.red,
+                size: iconSize,
+              )),
+        ),
+        if (item.status != 1)
+          IconButton(
+            icon: Icon(Icons.check, color: AppColors.green),
+            onPressed: () => onMarkDelivered(orderId, index, 1),
+            iconSize: iconSize,
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
           ),
-          Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: IconButton(
-                onPressed: () {
-                  if (item.status != 1) {
-                    onMarkDelivered(orderId, index, 4);
-                  }
-                },
-                icon: Icon(
-                  item.status == 1 ? Icons.check_circle : Icons.cancel,
-                  color: item.status == 1 ? AppColors.green : AppColors.red,
-                  size: iconSize,
-                )),
-          ),
-          if (item.status != 1)
-            IconButton(
-              icon: Icon(Icons.check, color: AppColors.green),
-              onPressed: () => onMarkDelivered(orderId, index, 1),
-              iconSize: iconSize,
-              padding: EdgeInsets.zero,
-              constraints: BoxConstraints(),
-            ),
-        ],
-      ),
+      ],
     );
   }
 }

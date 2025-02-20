@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:unavu_villa_project/core/app_colors.dart';
+import 'package:unavu_villa_project/core/app_textstyle.dart';
 import 'package:unavu_villa_project/core/enums.dart';
 import 'package:unavu_villa_project/models/getMenuItem.dart';
 import 'package:unavu_villa_project/models/orderDetaul.dart';
 import 'package:unavu_villa_project/models/order_list_response_model.dart';
+import 'package:unavu_villa_project/models/paybill_model.dart';
 import 'package:unavu_villa_project/models/report_response_model.dart';
+import 'package:unavu_villa_project/provider/cancelorder_provider.dart';
 import 'package:unavu_villa_project/provider/dashboard_provider.dart';
 import 'package:unavu_villa_project/provider/food_items_provider.dart';
+import 'package:unavu_villa_project/provider/generate_bill_provider.dart';
 import 'package:unavu_villa_project/provider/search_menu_provider.dart';
 import 'package:unavu_villa_project/shared/shared_functions.dart';
 import 'package:unavu_villa_project/viewmodels/orderController.dart';
@@ -20,12 +25,15 @@ class DashboardController extends GetxController {
   RxString selectedFiltermenu = ''.obs;
   RxString selectedCategory = ''.obs;
   RxList menuItems = <MenuItem>[].obs;
+  var selectedPrinter = ''.obs;
+  List<String> printers = ['Dine In'];
   Rx<DeviceType> deviceType = DeviceType.tablet.obs;
   DashboardProvider dashboardProvider = DashboardProvider();
   OrderListResponse orderList = OrderListResponse();
   ReportResponseModel reportData = ReportResponseModel();
   RxBool isLoading = true.obs;
   List<String> get filterOptions => ['Dine In'];
+
   List<String> get filterOrderScreen => [
         'All',
         'Veg',
@@ -146,19 +154,42 @@ class DashboardController extends GetxController {
     debugPrint("thee setter value is : $selectedTabIndex");
   }
 
-  void loadFilterMenuSearch(String categoryName) async {
+  void generateBillload(Bill bill) async {
     try {
-      final fetchedItems =
-          await SearchMenuService().searchMenuItems(categoryName);
-      // Clear existing items and add the new items
-      menuItems.clear(); // Clear existing items
-      menuItems.addAll(fetchedItems);
-      print("The values :$menuItems"); // Add new items
+      final fetchedItems = await GenerateBillProvider().billOrder(order: bill);
+      Get.back();
     } catch (e) {
       print("The values Arun :$e");
       Get.snackbar("Error", "Failed to load menu items: $e");
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void cancelBillload(Bill bill) async {
+    try {
+      final fetchedItems = await CancelBillProvider().billOrder(order: bill);
+      fetchAllOrders();
+      orderCancelAlert();
+    } catch (e) {
+      print("The values Arun :$e");
+      Get.snackbar("Error", "Failed to load menu items: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void orderCancelAlert() {
+    Get.defaultDialog(
+      titleStyle: AppTextStyles.heading,
+      middleTextStyle: AppTextStyles.icontext,
+      buttonColor: AppColors.orange,
+      title: "Order Upadte",
+      middleText: "Order Cancelled ",
+      textConfirm: "OK",
+      onConfirm: () {
+        Get.back();
+      },
+    );
   }
 }

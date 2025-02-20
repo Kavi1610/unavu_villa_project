@@ -26,8 +26,8 @@ class AppSearchBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
-            bottom: BorderSide(color: Colors.grey.shade300),
-            right: BorderSide(color: Colors.grey.shade300)),
+          bottom: BorderSide(color: Colors.grey.shade300),
+        ),
       ),
       child: Row(
         children: [
@@ -47,9 +47,7 @@ class AppSearchBar extends StatelessWidget {
               ),
               onChanged: (value) {
                 controller.searchQuery.value = value;
-                if (value.length > 2) {
-                  controller.loadFilterMenuSearch(value);
-                }
+                if (value.length > 2) {}
               },
             ),
           ),
