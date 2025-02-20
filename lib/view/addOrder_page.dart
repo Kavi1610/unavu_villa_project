@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +9,7 @@ import 'package:unavu_villa_project/core/app_textstyle.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
 import 'package:unavu_villa_project/models/getMenuItem.dart';
 import 'package:unavu_villa_project/models/get_table-Model.dart';
-import 'package:unavu_villa_project/models/menuItem.dart';
+
 import 'package:unavu_villa_project/models/menu_catagory_list_%20model.dart';
 import 'package:unavu_villa_project/viewmodels/add_orderButton_Controller.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
@@ -17,7 +19,6 @@ import 'package:unavu_villa_project/widgets/filterchips.dart';
 import 'package:unavu_villa_project/widgets/menuItemCard.dart';
 import 'package:unavu_villa_project/widgets/menu_button.dart';
 import 'package:unavu_villa_project/widgets/orderDetailswidget.dart';
-import 'package:unavu_villa_project/widgets/searchbar.dart';
 
 class AddOrderWidget extends StatefulWidget {
   const AddOrderWidget({super.key});

@@ -8,7 +8,8 @@ import 'package:unavu_villa_project/core/appresponsive.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
 
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
-  DashboardAppBar({super.key});
+  final ValueChanged<int>? onClick;
+  DashboardAppBar({super.key, this.onClick});
 
   final DashboardController controller = Get.put(DashboardController());
 
@@ -72,11 +73,38 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
                 spacing: 12.0,
                 alignment: WrapAlignment.center,
                 children: [
-                  _buildNavButton('Order Home', AppIcons.homeIconTab, () {}),
-                  _buildNavButton('Add Order', 'assets/note.png', () {}),
-                  _buildNavButton('Reports', 'assets/clock.png', () {}),
                   _buildNavButton(
-                      'Menu Availability', 'assets/receipt.png', () {}),
+                    'Order Home',
+                    AppIcons.homeIconTab,
+                    () {
+                      onClick!(0);
+                      controller.setSelectedTabIndex(0);
+                    },
+                  ),
+                  _buildNavButton(
+                    'Add Order',
+                    'assets/note.png',
+                    () {
+                      onClick!(1);
+                      controller.setSelectedTabIndex(1);
+                    },
+                  ),
+                  _buildNavButton(
+                    'Reports',
+                    'assets/clock.png',
+                    () {
+                      onClick!(2);
+                      controller.setSelectedTabIndex(2);
+                    },
+                  ),
+                  _buildNavButton(
+                    'Menu Availability',
+                    'assets/receipt.png',
+                    () {
+                      onClick!(3);
+                      controller.setSelectedTabIndex(3);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -111,7 +139,11 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
       String label, String iconPath, VoidCallback onPressed) {
     return TextButton.icon(
       onPressed: onPressed,
-      icon: Image.asset(iconPath, width: 22.0, height: 22.0),
+      icon: Image.asset(
+        iconPath,
+        width: 22.0,
+        height: 22.0,
+      ),
       label: Text(
         label,
         style: GoogleFonts.dmSans(
