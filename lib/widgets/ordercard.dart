@@ -128,7 +128,7 @@ class OrderCard extends StatelessWidget {
                       ),
                       Spacer(),
                       Text(
-                        'To: ${Jiffy.parse(order.createdAt!, pattern: "yyyy-MM-ddThh:mm:ssZ").format(pattern: "hh:mm a")}',
+                        'To: ${Jiffy.parse(order.items![order.items!.length - 1].updatedAt!, pattern: "yyyy-MM-ddThh:mm:ssZ").format(pattern: "hh:mm a")}',
                         style: GoogleFonts.dmSans(
                           color: Colors.black,
                           fontWeight: FontWeight.w400,
