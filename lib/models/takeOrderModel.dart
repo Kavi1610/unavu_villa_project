@@ -57,7 +57,7 @@ class OrderItemModel {
   final double total;
   final String tax_type; // Added
   final int status; // Added
-  final String statustime; // Added
+  final int statustime; // Added
   final bool isDeleted;
 
   OrderItemModel({

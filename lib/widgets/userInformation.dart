@@ -88,12 +88,10 @@ class UserInformation extends StatelessWidget {
                           0.0, // Use tryParse
                       total: (double.tryParse(cartItem.price) ?? 0.0) *
                           (menuController.itemQuantities[cartItem] ?? 1),
-                      comp: true,
+                      comp: false,
                       isDeleted: false,
                       status: 0,
-                      statustime: DateFormat('hh:mm a')
-                          .format(DateTime.now())
-                          .toString(),
+                      statustime: 0,
                       tax_type: cartItem.dineintax,
                     ));
                   }

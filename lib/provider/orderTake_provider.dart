@@ -37,11 +37,20 @@ class OrderRepo extends BaseProvider {
                   "comp": item.comp,
                   "total": item.total,
                   "is_deleted": item.isDeleted,
+                  "tax_type": item.tax_type,
+                  "status": item.status,
+                  "statustime": item.statustime,
                 })
             .toList(),
         "order_by": order.orderBy,
         "paymentmethod": order.paymentMethod,
         "knotes": order.knotes,
+        "branchid": order.branchid,
+        "floorid": order.floorid,
+        "printerid": order.printerid,
+        "discountamount": order.discountamount,
+        "totalamount": order.totalamount,
+        "grandtotal": order.totalamount
       };
 
       final response = await post(
