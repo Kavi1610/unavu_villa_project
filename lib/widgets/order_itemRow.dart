@@ -11,15 +11,15 @@ class OrderItemRow extends StatelessWidget {
   final Items1 item;
   final String orderId;
   final int index;
-  final Function(String, int) onMarkDelivered;
+  final Function(String, int, int) onMarkDelivered;
 
   OrderItemRow({
-    Key? key,
+    super.key,
     required this.item,
     required this.orderId,
     required this.index,
     required this.onMarkDelivered,
-  }) : super(key: key);
+  });
 
   final DashboardController controller = Get.find<DashboardController>();
 
@@ -57,16 +57,22 @@ class OrderItemRow extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(right: 16.0),
-            child: Icon(
-              item.status == 1 ? Icons.check_circle : Icons.cancel,
-              color: item.status == 1 ? AppColors.green : AppColors.red,
-              size: iconSize,
-            ),
+            child: IconButton(
+                onPressed: () {
+                  if (item.status != 1) {
+                    onMarkDelivered(orderId, index, 4);
+                  }
+                },
+                icon: Icon(
+                  item.status == 1 ? Icons.check_circle : Icons.cancel,
+                  color: item.status == 1 ? AppColors.green : AppColors.red,
+                  size: iconSize,
+                )),
           ),
           if (item.status != 1)
             IconButton(
               icon: Icon(Icons.check, color: AppColors.green),
-              onPressed: () => onMarkDelivered(orderId, index),
+              onPressed: () => onMarkDelivered(orderId, index, 1),
               iconSize: iconSize,
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),

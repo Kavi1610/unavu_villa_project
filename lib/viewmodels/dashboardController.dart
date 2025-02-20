@@ -6,12 +6,14 @@ import 'package:unavu_villa_project/models/orderDetaul.dart';
 import 'package:unavu_villa_project/models/order_list_response_model.dart';
 import 'package:unavu_villa_project/models/report_response_model.dart';
 import 'package:unavu_villa_project/provider/dashboard_provider.dart';
+import 'package:unavu_villa_project/provider/food_items_provider.dart';
 import 'package:unavu_villa_project/provider/search_menu_provider.dart';
+import 'package:unavu_villa_project/shared/shared_functions.dart';
 import 'package:unavu_villa_project/viewmodels/orderController.dart';
 
 class DashboardController extends GetxController {
   final OrderProvider orderProvider = Get.put(OrderProvider());
-
+  final FoodItemsProvider foodItemProvider = FoodItemsProvider();
   RxString searchQuery = ''.obs;
   RxInt selectedTabIndex = 0.obs;
   RxInt selectedFilterIndex = 0.obs;
@@ -38,10 +40,12 @@ class DashboardController extends GetxController {
   }
 
   fetchAllOrders() async {
+    isLoading(true);
     String branchId = "101";
     await dashboardProvider.fetchOrderList(branchId).then((val) {
       if (val.status == true) {
         orderList = val;
+
         fetchReport();
         debugPrint("theee resposs : ${orderList.toJson()}");
       } else {
@@ -87,8 +91,45 @@ class DashboardController extends GetxController {
     orderProvider.updateOrderStatus(id, OrderStatus.cancelled);
   }
 
-  void markItemAsDelivered(String orderId, int itemIndex) {
-    orderProvider.markItemAsDelivered(orderId, itemIndex);
+  void markItemAsDelivered(String orderId, int itemIndex, int status) async {
+    debugPrint(
+        "theee order id is : $orderId , $itemIndex and the status is : $status");
+
+    int? temp;
+    // orderProvider.markItemAsDelivered(orderId, itemIndex);
+    for (int i = 0; i < orderList.data!.items!.length; i++) {
+      debugPrint("comess : $i");
+      if (orderId == orderList.data!.items![i].orderid.toString()) {
+        debugPrint("dcjdvbf matchess");
+        temp = i;
+      }
+    }
+    debugPrint("temenr : $temp");
+    String timestamp =
+        orderList.data!.items![temp!].items![itemIndex].createdAt!;
+    debugPrint("theee stfr 1 : $timestamp");
+    // Parse the timestamp to DateTime
+    DateTime givenTime = DateTime.parse(timestamp);
+    debugPrint("theee stfr 2 : $givenTime");
+    // Get the current time
+    DateTime currentTime = DateTime.now();
+    debugPrint("theee stfr 3 : $currentTime");
+    // Calculate the difference in minutes
+    int differenceInMinutes = currentTime.difference(givenTime).inMinutes;
+    debugPrint("theee stfr 4 : $differenceInMinutes");
+    debugPrint(
+        "the request bodiess are : ${orderList.data!.items![temp].items![itemIndex].id!} , $status and $differenceInMinutes");
+    await foodItemProvider
+        .updateItemStatus(orderList.data!.items![temp].items![itemIndex].id!,
+            status, differenceInMinutes)
+        .then((val) {
+      if (val == true) {
+        fetchAllOrders();
+        toastify(1, "Item Updated Successfully");
+      }
+    }).catchError((e) {
+      debugPrint("theee error is : $e");
+    });
   }
 
   void setFilterIndex(int index, String name) {
@@ -102,6 +143,7 @@ class DashboardController extends GetxController {
 
   void setSelectedTabIndex(int index) {
     selectedTabIndex.value = index;
+    debugPrint("thee setter value is : $selectedTabIndex");
   }
 
   void loadFilterMenuSearch(String categoryName) async {

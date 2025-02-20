@@ -27,208 +27,220 @@ class DashboardView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.cardBackground,
-      appBar: DashboardAppBar(),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  isMobile
-                      ? Column(
-                          children: [
-                            AppSearchBar(
-                              onClicked: (val) {},
-                            ),
-                            SizedBox(height: 10),
-                            FilterChips(isTablet: false),
-                          ],
-                        )
-                      : Row(
-                          children: [
-                            Expanded(
-                              // Make Card take available space
-                              child: Card(
-                                elevation: 2,
-                                color: Colors.white,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 8),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 21.0),
-                                        child: AppSearchBar(
-                                          onClicked: (val) {},
-                                        ),
-                                      )), // Ensuring it expands properly
-
-                                      FilterChips(isTablet: true),
-                                    ],
-                                  ),
-                                ),
+      appBar: DashboardAppBar(
+        onClick: (val) {
+          controller.selectedTabIndex.value = val;
+        },
+      ),
+      body: RefreshIndicator(
+        onRefresh: () {
+          controller.fetchAllOrders();
+          return Future.value();
+        },
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    isMobile
+                        ? Column(
+                            children: [
+                              AppSearchBar(
+                                onClicked: (val) {},
                               ),
-                            ),
-                            SizedBox(width: 10), // Adjust spacing
-                            InkWell(
-                              onTap: () {
-                                buttonController.makebuttontrue();
-                                Get.toNamed('/addorder');
-                              },
-                              child: Container(
-                                height: 48,
-                                width: MediaQuery.sizeOf(context).width / 9,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(36),
-                                  color: AppColors.primary,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Add Order",
-                                    style: GoogleFonts.dmSans(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
+                              SizedBox(height: 10),
+                              FilterChips(isTablet: false),
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              Expanded(
+                                // Make Card take available space
+                                child: Card(
+                                  elevation: 2,
+                                  color: Colors.white,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 8),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                            child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 21.0),
+                                          child: AppSearchBar(
+                                            onClicked: (val) {},
+                                          ),
+                                        )),
+                                        FilterChips(isTablet: true),
+                                      ],
                                     ),
                                   ),
                                 ),
                               ),
+                              SizedBox(width: 10), // Adjust spacing
+                              InkWell(
+                                onTap: () {
+                                  buttonController.makebuttontrue();
+                                  Get.toNamed('/addorder');
+                                },
+                                child: Container(
+                                  height: 48,
+                                  width: MediaQuery.sizeOf(context).width / 9,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(36),
+                                    color: AppColors.primary,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Add Order",
+                                      style: GoogleFonts.dmSans(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                  ],
+                ),
+              ),
+              Obx(() => controller.isLoading.value
+                  ? blackLoader()
+                  : controller.selectedTabIndex.value == 2
+                      ? Column(
+                          children: [
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                for (int i = 0; i < 3; i++)
+                                  Container(
+                                    width: Get.width / 3.5,
+                                    height: Get.height / 7,
+                                    margin: const EdgeInsets.only(left: 8),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 4,
+                                          ),
+                                        ]),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          i == 0
+                                              ? "Today Sales"
+                                              : i == 1
+                                                  ? "Today Order Completed"
+                                                  : "Today Order Cancelled",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ),
+                                        Text(
+                                          i == 0
+                                              ? "${controller.reportData.data!.orderCompletedToday}"
+                                              : i == 1
+                                                  ? "${controller.reportData.data!.orderCompletedToday}"
+                                                  : "${controller.reportData.data!.orderCancelledToday}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 18,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                for (int i = 0; i < 3; i++)
+                                  Container(
+                                    width: Get.width / 3.5,
+                                    height: Get.height / 7,
+                                    margin: const EdgeInsets.only(left: 8),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            blurRadius: 4,
+                                          ),
+                                        ]),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          i == 0
+                                              ? "This Week Sales"
+                                              : i == 1
+                                                  ? "This Week Order Completed"
+                                                  : "Today Week Order Cancelled",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ),
+                                        Text(
+                                          i == 0
+                                              ? "${controller.reportData.data!.orderCompletedWeek}"
+                                              : i == 1
+                                                  ? "${controller.reportData.data!.orderCompletedWeek}"
+                                                  : "${controller.reportData.data!.orderCancelledWeek}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              ],
                             ),
                           ],
-                        ),
-                ],
-              ),
-            ),
-            Obx(() => controller.isLoading.value
-                ? blackLoader()
-                : Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                children: [
-                                  Text("Today Sales"),
-                                  Text(
-                                      "${controller.reportData.data!.orderCompletedToday}"),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                children: [
-                                  Text("Today Order Completed"),
-                                  Text(
-                                      "${controller.reportData.data!.orderCompletedToday}"),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                children: [
-                                  Text("Today Order Cancelled"),
-                                  Text(
-                                      "${controller.reportData.data!.orderCancelledToday}"),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                children: [
-                                  Text("This Week Sales"),
-                                  Text(
-                                      "${controller.reportData.data!.orderCompletedWeek}"),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                children: [
-                                  Text("This Week Completed"),
-                                  Text(
-                                      "${controller.reportData.data!.orderCompletedWeek}"),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                children: [
-                                  Text("This Week Cancelled"),
-                                  Text(
-                                      "${controller.reportData.data!.orderCancelledWeek}"),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )),
-            Obx(() => controller.isLoading.value
-                ? blackLoader()
-                : Flexible(
-                    child: controller.orderList.data!.items!.isEmpty
-                        ? Center(child: Text("No Orders Available"))
-                        : GridView.builder(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: isMobile ? 1 : 2,
-                                    crossAxisSpacing: 16,
-                                    mainAxisSpacing: 16,
-                                    childAspectRatio: 5.9 / 6.1),
-                            itemCount: controller.orderList.data!.items!.length,
-                            itemBuilder: (context, index) {
-                              return OrderCard(
-                                  order:
-                                      controller.orderList.data!.items![index]);
-                            },
-                          ),
-                  ))
-          ],
+                        )
+                      : Flexible(
+                          child: controller.orderList.data!.items!.isEmpty
+                              ? Center(child: Text("No Orders Available"))
+                              : GridView.builder(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 16),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: isMobile ? 1 : 2,
+                                          crossAxisSpacing: 16,
+                                          mainAxisSpacing: 16,
+                                          childAspectRatio: 5.9 / 6.1),
+                                  itemCount:
+                                      controller.orderList.data!.items!.length,
+                                  itemBuilder: (context, index) {
+                                    return OrderCard(
+                                        order: controller
+                                            .orderList.data!.items![index]);
+                                  },
+                                ),
+                        ))
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: isMobile ? BottomNavBar() : null,

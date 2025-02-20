@@ -8,6 +8,7 @@ class ApiEndpoints {
   static const floorMaster = "floormaster/get_all_floormaster/?page=1&size=50";
   static const tableMaster = "tablemaster/get_all_tablemaster/?page=1&size=50";
   static const getReport = "order/get_reports/";
+  static const updateItem = "order/item_status_change/";
 
   // Method to get the URL for getting menu categories with parameters
   static String getCategoryMenuFiter(String categoryId, String categoryName) {

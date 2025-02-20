@@ -26,10 +26,10 @@ class OrderListResponse {
 
 class Data {
   List<Items>? items;
-  int? total;
-  int? page;
-  int? size;
-  int? pages;
+  var total;
+  var page;
+  var size;
+  var pages;
 
   Data({this.items, this.total, this.page, this.size, this.pages});
 
@@ -60,10 +60,12 @@ class Data {
 }
 
 class Items {
-  int? id;
-  int? ordertype;
-  int? status;
-  int? tableid;
+  var id;
+  var ordertype;
+  var billno;
+  var orderid;
+  var status;
+  var tableid;
   String? numberofpeople;
   String? captainname;
   String? waitername;
@@ -74,8 +76,14 @@ class Items {
   String? address;
   String? customerGSTIN;
   List<Items1>? items;
-  int? orderBy;
+  var orderBy;
   String? knotes;
+  var branchid;
+  var floorid;
+  var printerid;
+  var discountamount;
+  var totalamount;
+  var grandtotal;
   String? createdAt;
   String? updatedAt;
   var deletedAt;
@@ -84,6 +92,8 @@ class Items {
   Items(
       {this.id,
       this.ordertype,
+      this.billno,
+      this.orderid,
       this.status,
       this.tableid,
       this.numberofpeople,
@@ -98,6 +108,12 @@ class Items {
       this.items,
       this.orderBy,
       this.knotes,
+      this.branchid,
+      this.floorid,
+      this.printerid,
+      this.discountamount,
+      this.totalamount,
+      this.grandtotal,
       this.createdAt,
       this.updatedAt,
       this.deletedAt,
@@ -106,6 +122,8 @@ class Items {
   Items.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     ordertype = json['ordertype'];
+    billno = json['billno'];
+    orderid = json['orderid'];
     status = json['status'];
     tableid = json['tableid'];
     numberofpeople = json['numberofpeople'];
@@ -125,6 +143,12 @@ class Items {
     }
     orderBy = json['order_by'];
     knotes = json['knotes'];
+    branchid = json['branchid'];
+    floorid = json['floorid'];
+    printerid = json['printerid'];
+    discountamount = json['discountamount'];
+    totalamount = json['totalamount'];
+    grandtotal = json['grandtotal'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     deletedAt = json['deleted_at'];
@@ -135,6 +159,8 @@ class Items {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['ordertype'] = ordertype;
+    data['billno'] = billno;
+    data['orderid'] = orderid;
     data['status'] = status;
     data['tableid'] = tableid;
     data['numberofpeople'] = numberofpeople;
@@ -151,6 +177,12 @@ class Items {
     }
     data['order_by'] = orderBy;
     data['knotes'] = knotes;
+    data['branchid'] = branchid;
+    data['floorid'] = floorid;
+    data['printerid'] = printerid;
+    data['discountamount'] = discountamount;
+    data['totalamount'] = totalamount;
+    data['grandtotal'] = grandtotal;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['deleted_at'] = deletedAt;
@@ -160,16 +192,17 @@ class Items {
 }
 
 class Items1 {
-  int? id;
-  int? orderid;
-  int? itemcode;
+  var id;
+  var orderid;
+  var itemcode;
   String? itemname;
-  int? quantity;
-  int? price;
+  var quantity;
+  var price;
   bool? comp;
-  int? total;
-  int? status;
-  String? statustime;
+  var total;
+  String? taxType;
+  var status;
+  var statustime;
   bool? isDeleted;
   String? createdAt;
   String? updatedAt;
@@ -184,6 +217,7 @@ class Items1 {
       this.price,
       this.comp,
       this.total,
+      this.taxType,
       this.status,
       this.statustime,
       this.isDeleted,
@@ -200,6 +234,7 @@ class Items1 {
     price = json['price'];
     comp = json['comp'];
     total = json['total'];
+    taxType = json['tax_type'];
     status = json['status'];
     statustime = json['statustime'];
     isDeleted = json['is_deleted'];
@@ -218,6 +253,7 @@ class Items1 {
     data['price'] = price;
     data['comp'] = comp;
     data['total'] = total;
+    data['tax_type'] = taxType;
     data['status'] = status;
     data['statustime'] = statustime;
     data['is_deleted'] = isDeleted;
