@@ -56,12 +56,6 @@ class OrderDetailsWidget extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                       decoration: InputDecoration(
-                        suffixText: "%",
-                        suffixStyle: GoogleFonts.dmSans(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
                         hintText: "Write your order note here...",
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 16),
