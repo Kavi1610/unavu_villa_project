@@ -56,16 +56,16 @@ class DashboardController extends GetxController {
   }
 
   fetchAllOrders() async {
-    isLoading(true);
+    isLoading.value = true;
     String branchId = "101";
     await dashboardProvider.fetchOrderList(branchId).then((val) {
       if (val.status == true) {
         orderList = val;
-
+        isLoading.value = false;
         fetchReport();
         debugPrint("theee resposs : ${orderList.toJson()}");
       } else {
-        isLoading(true);
+        isLoading.value = true;
       }
     });
   }
@@ -73,7 +73,7 @@ class DashboardController extends GetxController {
   void fetchReport() async {
     await dashboardProvider.fetchReport().then((val) {
       reportData = val;
-      isLoading(false);
+      isLoading.value = false;
     });
   }
 
@@ -178,7 +178,7 @@ class DashboardController extends GetxController {
   void generateBillload(Map<String, dynamic> bill) async {
     try {
       final fetchedItems = await GenerateBillProvider().billOrder(order: bill);
-
+      fetchAllOrders();
       Get.back();
     } catch (e) {
       Get.snackbar("Error", "Failed to load menu items: $e");

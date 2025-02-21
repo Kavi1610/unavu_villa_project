@@ -6,12 +6,14 @@ import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/app_icon.dart';
 import 'package:unavu_villa_project/core/appresponsive.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
+import 'package:unavu_villa_project/viewmodels/login_viewmodel.dart';
 
 class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
   final ValueChanged<int>? onClick;
   DashboardAppBar({super.key, this.onClick});
 
   final DashboardController controller = Get.put(DashboardController());
+  final LoginViewModel loginViewModel = Get.find<LoginViewModel>();
 
   @override
   Size get preferredSize =>
@@ -102,24 +104,53 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
 
             // User Info
-            Row(
-              children: [
-                Text(
-                  'Hi Sanju',
-                  style: GoogleFonts.dmSans(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: isTablet ? 14.0 : 16.0,
+            Obx(
+              () => Row(
+                children: [
+                  Container(
+                    height: 40,
+                    width: 130,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(21),
+                        color: Color(0XFFF8F9FD)),
+                    child: Center(
+                      child: Text(
+                        loginViewModel.selectedRole.value,
+                        style: GoogleFonts.dmSans(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8.0),
-                CircleAvatar(
-                  radius: isTablet ? 20.0 : 24.0,
-                  backgroundColor: Colors.grey.shade200,
-                  backgroundImage: AssetImage('assets/profile.png'),
-                ),
-                const SizedBox(width: 16.0),
-              ],
+                  const SizedBox(width: 8.0),
+                  Container(
+                    height: 36,
+                    width: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(21),
+                        color: Color(0XFFF8F9FD)),
+                    child: Center(
+                      child: Text(
+                        loginViewModel.selectedBranch.value,
+                        style: GoogleFonts.dmSans(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8.0),
+                  CircleAvatar(
+                    radius: isTablet ? 20.0 : 24.0,
+                    backgroundColor: Colors.grey.shade200,
+                    backgroundImage: AssetImage('assets/profile.png'),
+                  ),
+                  const SizedBox(width: 16.0),
+                ],
+              ),
             ),
           ],
         ),

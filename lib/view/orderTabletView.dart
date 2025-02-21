@@ -212,36 +212,40 @@ class DashboardView extends StatelessWidget {
                               ),
                             ],
                           )
-                        : controller.orderList.data!.items!.isEmpty
-                            ? Center(child: Text("No Orders Available"))
-                            : Expanded(
-                                child: SingleChildScrollView(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 12,
-                                        right: 12,
-                                        left: 12,
-                                        bottom: 8),
-                                    child: GridView.builder(
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: isMobile ? 1 : 3,
-                                              crossAxisSpacing: 12,
-                                              mainAxisSpacing: 12,
-                                              childAspectRatio: 5.2 / 8.3),
-                                      itemCount: controller
-                                          .orderList.data!.items!.length,
-                                      itemBuilder: (context, index) {
-                                        return OrderCard(
-                                            order: controller
-                                                .orderList.data!.items![index]);
-                                      },
-                                    ),
+                        : Obx(() {
+                            if (controller.isLoading.value) {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            if (controller.orderList.data!.items!.isEmpty) {
+                              return Center(child: Text("No items available"));
+                            }
+
+                            return Expanded(
+                              child: SingleChildScrollView(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 12, right: 12, left: 12, bottom: 8),
+                                  child: GridView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: isMobile ? 1 : 3,
+                                            crossAxisSpacing: 12,
+                                            mainAxisSpacing: 12,
+                                            childAspectRatio: 5.2 / 8.3),
+                                    itemCount: controller
+                                        .orderList.data!.items!.length,
+                                    itemBuilder: (context, index) {
+                                      return OrderCard(
+                                          order: controller
+                                              .orderList.data!.items![index]);
+                                    },
                                   ),
                                 ),
-                              ))
+                              ),
+                            );
+                          }))
               ],
             ),
           ),
