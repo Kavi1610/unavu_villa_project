@@ -368,11 +368,16 @@ class CartItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.itemname,
-                    style: GoogleFonts.dmSans(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black)),
+                Text(
+                  item.itemname,
+                  style: GoogleFonts.dmSans(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                  overflow:
+                      TextOverflow.ellipsis, // This will apply the ellipsis
+                  maxLines: 1, // Limit to one line
+                ),
                 SizedBox(height: 2),
                 Text("Price",
                     style: GoogleFonts.dmSans(

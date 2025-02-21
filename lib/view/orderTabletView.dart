@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/shared/shared_functions.dart';
 import 'package:unavu_villa_project/view/addOrder_page.dart';
@@ -222,27 +223,34 @@ class DashboardView extends StatelessWidget {
                             }
 
                             return Expanded(
-                              child: SingleChildScrollView(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 12, right: 12, left: 12, bottom: 8),
-                                  child: GridView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: isMobile ? 1 : 3,
-                                            crossAxisSpacing: 12,
-                                            mainAxisSpacing: 12,
-                                            childAspectRatio: 5.2 / 8.3),
-                                    itemCount: controller
-                                        .orderList.data!.items!.length,
-                                    itemBuilder: (context, index) {
-                                      return OrderCard(
-                                          order: controller
-                                              .orderList.data!.items![index]);
-                                    },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 12, right: 12, left: 12, bottom: 8),
+                                child: StaggeredGridView.countBuilder(
+                                  crossAxisCount: 3,
+                                  itemCount:
+                                      controller.orderList.data!.items!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          OrderCard(
+                                    order: controller
+                                        .orderList.data!.items![index],
                                   ),
+                                  staggeredTileBuilder: (int index) {
+                                    int itemCount = controller.orderList.data!
+                                        .items![index].items!.length;
+
+                                    // Use a mapping function to determine the height
+                                    double heightFactor =
+                                        getHeightFactor(itemCount);
+
+                                    return StaggeredTile.count(1, heightFactor);
+                                  },
+
+                                  mainAxisSpacing: 12.0,
+                                  crossAxisSpacing: 12.0,
+                                  physics:
+                                      BouncingScrollPhysics(), // Allows natural scrolling
                                 ),
                               ),
                             );
@@ -254,5 +262,24 @@ class DashboardView extends StatelessWidget {
       ),
       bottomNavigationBar: isMobile ? BottomNavBar() : null,
     );
+  }
+
+  double getHeightFactor(int itemCount) {
+    if (itemCount <= 1) return 1.1;
+    if (itemCount == 2) return 1.18;
+    if (itemCount == 3) return 1.28;
+    if (itemCount == 4) return 1.49;
+    if (itemCount == 5) return 1.68;
+    if (itemCount == 6) return 1.79;
+    if (itemCount == 7) return 1.89;
+    if (itemCount == 8) return 1.96;
+    if (itemCount == 9) return 2.53;
+    if (itemCount == 10) return 2.64;
+    if (itemCount == 11) return 2.75;
+    if (itemCount == 12) return 2.88;
+    if (itemCount == 13) return 2.95;
+    if (itemCount == 14) return 3.0;
+    if (itemCount >= 15) return 3.3; // Max height for large orders
+    return 1.1; // Default value
   }
 }

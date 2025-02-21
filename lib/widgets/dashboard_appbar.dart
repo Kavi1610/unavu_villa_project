@@ -58,10 +58,22 @@ class DashboardAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: Colors.white,
             border: Border(
                 bottom: BorderSide(color: AppColors.borderclr, width: 1))),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.only(left: 12.0, right: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Icon(Icons.arrow_back_outlined),
+              iconSize: isTablet ? 24 : 13,
+              color: AppColors.background,
+            ),
+            SizedBox(
+              width: 8,
+            ),
+
             // Logo
             Image.asset(
               'assets/image 8.png',

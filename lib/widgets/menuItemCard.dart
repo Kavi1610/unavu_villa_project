@@ -30,7 +30,7 @@ class MenuItemCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               child: Image.asset(AppIcons.productImage,
-                  height: AppDimensions.screenHeight / 7.5,
+                  height: AppDimensions.screenHeight / 7,
                   fit: BoxFit.cover,
                   width: double.infinity),
             ),

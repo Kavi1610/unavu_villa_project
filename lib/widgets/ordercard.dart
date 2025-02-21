@@ -185,20 +185,28 @@ class OrderCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.004),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: order.items!.length,
-                      itemBuilder: (context, index) {
-                        final item = order.items![index];
-                        return OrderItemRow(
-                          item: item,
-                          orderId: order.id.toString(),
-                          index: index,
-                          onMarkDelivered: controller.markItemAsDelivered,
-                        );
-                      },
-                    ),
+                    order.items!.length != 0
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: order.items!.length,
+                            itemBuilder: (context, index) {
+                              final item = order.items![index];
+                              return OrderItemRow(
+                                item: item,
+                                orderId: order.id.toString(),
+                                index: index,
+                                onMarkDelivered: controller.markItemAsDelivered,
+                              );
+                            },
+                          )
+                        : Text(
+                            "No Menu Item",
+                            style: GoogleFonts.dmSans(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                   ],
                 ),
               ),
@@ -249,11 +257,7 @@ class OrderCard extends StatelessWidget {
                               horizontal: 12, vertical: isMobile ? 10 : 12),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: order.status == 1
-                                ? Colors.green
-                                : order.status == 2
-                                    ? Colors.amber
-                                    : Colors.red,
+                            color: Color(0xFF2D62B5),
                           ),
                           child: Center(
                             child: Text(
