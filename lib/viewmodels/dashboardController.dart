@@ -32,9 +32,27 @@ class DashboardController extends GetxController {
     discountAmount: 0.0,
     roundOff: 0.0,
     grandTotal: 0.0,
+    address: '',
+    orderType: 0,
+    status: 0,
+    tableId: 0,
+    numberOfPeople: '',
+    captainName: '',
+    waiterName: '',
+    customerName: '',
+    customerMobile: '',
+    email: '',
+    location: '',
+    customerGSTIN: '',
+    notes: '',
+    orderBy: 0,
+    branchId: 0,
+    printerId: 0,
+    floorId: 0,
+    order: 0,
   ).obs;
   var selectedPrinter = ''.obs;
-  List<String> printers = ['Dine In'];
+  List<String> printers = ['RP3220 Star'];
   Rx<DeviceType> deviceType = DeviceType.tablet.obs;
   DashboardProvider dashboardProvider = DashboardProvider();
   OrderListResponse orderList = OrderListResponse();
@@ -190,7 +208,7 @@ class DashboardController extends GetxController {
   void cancelBillload(Map<String, dynamic> bill) async {
     try {
       final fetchedItems = await CancelBillProvider().billOrder(order: bill);
-      fetchAllOrders();
+
       orderCancelAlert();
     } catch (e) {
       print("The values Arun :$e");
@@ -209,6 +227,7 @@ class DashboardController extends GetxController {
       middleText: "Order Cancelled ",
       textConfirm: "OK",
       onConfirm: () {
+        fetchAllOrders();
         Get.back();
       },
     );

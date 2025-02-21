@@ -13,14 +13,17 @@ import 'package:unavu_villa_project/provider/get_menu_item_provider.dart';
 import 'package:unavu_villa_project/provider/get_table_data_provider.dart';
 import 'package:unavu_villa_project/provider/orderTake_provider.dart';
 import 'package:unavu_villa_project/provider/search_menu_provider.dart';
+import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
 
 class FoodMenuController extends GetxController {
+  final DashboardController dashboardController =
+      Get.put(DashboardController());
   RxList menuItems = <MenuItem>[].obs;
   RxList cartItems = <MenuItem>[].obs;
   var menuCatagoryItem = <MenuCategory>[].obs;
   var itemQuantities = <MenuItem, int>{}.obs;
   RxList orderItem = <OrderItemModel>[].obs;
-  var takeOrder = false.obs;
+  RxBool takeOrder = false.obs;
   RxString searchQuery = ''.obs;
   var isLoading = true.obs;
   RxString orderNote = ''.obs;
@@ -35,6 +38,7 @@ class FoodMenuController extends GetxController {
   var discountPercentage = 0.0.obs;
   var discountAmount = 0.0.obs;
   var countNumberPeople = ''.obs;
+  var checkAddUItem = false.obs;
   List<String> tableDataList = ["Option 1", "Option 2", "Option 3"];
   double get subTotal {
     return cartItems.fold(0.0, (sum, item) {
@@ -142,8 +146,8 @@ class FoodMenuController extends GetxController {
     update();
   }
 
-  void takeOrderNow() {
-    takeOrder.value = true;
+  void takeOrderNow(bool val) {
+    takeOrder.value = val;
   }
 
   void orderNoteValue(String value) {
@@ -294,7 +298,8 @@ class FoodMenuController extends GetxController {
       middleText: "Order Created Sucessfully",
       textConfirm: "OK",
       onConfirm: () {
-        Get.toNamed('/dashboard');
+        Get.back();
+        Get.offNamedUntil('/dashboard', (route) => false);
       },
     );
   }

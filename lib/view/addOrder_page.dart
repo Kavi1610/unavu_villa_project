@@ -31,13 +31,17 @@ class _AddOrderWidgetState extends State<AddOrderWidget> {
   String selectedCategory = 'Coffee';
   ButtonController buttonController = Get.put(ButtonController());
   final FoodMenuController menuController = Get.put(FoodMenuController());
+  final DashboardController dashboardController =
+      Get.find<DashboardController>();
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      showAlert();
-    });
+    if (!dashboardController.addItemcheck.value) {
+      Future.delayed(Duration.zero, () {
+        showAlert();
+      });
+    }
   }
 
   void showAlert() {

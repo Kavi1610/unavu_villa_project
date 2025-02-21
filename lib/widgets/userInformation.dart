@@ -137,6 +137,7 @@ class UserInformation extends StatelessWidget {
 
                   // Call the createOrder method
                   menuController.createOrder(orderRequest);
+                  menuController.takeOrderNow(false);
                 }
               },
               style: ElevatedButton.styleFrom(

@@ -60,8 +60,8 @@ class Data {
 }
 
 class Items {
-  var id;
-  var ordertype;
+  int? id;
+  int? ordertype;
   var billno;
   var orderid;
   var status;
@@ -76,11 +76,11 @@ class Items {
   String? address;
   String? customerGSTIN;
   List<Items1>? items;
-  var orderBy;
+  int? orderBy;
   String? knotes;
-  var branchid;
-  var floorid;
-  var printerid;
+  int? branchid;
+  int? floorid;
+  int? printerid;
   var discountamount;
   var totalamount;
   var grandtotal;
@@ -192,16 +192,16 @@ class Items {
 }
 
 class Items1 {
-  var id;
-  var orderid;
-  var itemcode;
+  int? id;
+  int? orderid;
+  int? itemcode;
   String? itemname;
-  var quantity;
-  var price;
+  int? quantity;
+  double? price;
   bool? comp;
-  var total;
+  int? total;
   String? taxType;
-  var status;
+  int? status;
   var statustime;
   bool? isDeleted;
   String? createdAt;
@@ -226,20 +226,29 @@ class Items1 {
       this.deletedAt});
 
   Items1.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    orderid = json['orderid'];
-    itemcode = json['itemcode'];
-    itemname = json['itemname'];
-    quantity = json['quantity'];
-    price = json['price'];
-    comp = json['comp'];
-    total = json['total'];
-    taxType = json['tax_type'];
-    status = json['status'];
+    id = json['id'] as int?;
+    orderid = json['orderid'] as int?;
+    itemcode = json['itemcode'] as int?;
+    itemname = json['itemname'] as String?;
+    quantity = json['quantity'] as int?;
+
+    // Check if price is an int or a double and handle accordingly
+    if (json['price'] is int) {
+      price = (json['price'] as int).toDouble();
+    } else if (json['price'] is double) {
+      price = json['price'] as double;
+    } else {
+      price = null; // or handle the error as needed
+    }
+
+    comp = json['comp'] as bool?;
+    total = json['total'] as int?;
+    taxType = json['tax_type'] as String?;
+    status = json['status'] as int?;
     statustime = json['statustime'];
-    isDeleted = json['is_deleted'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    isDeleted = json['is_deleted'] as bool?;
+    createdAt = json['created_at'] as String?;
+    updatedAt = json['updated_at'] as String?;
     deletedAt = json['deleted_at'];
   }
 

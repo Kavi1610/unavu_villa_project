@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:unavu_villa_project/view/login_page.dart';
 import 'routes/app_routes.dart';
 import 'package:get_storage/get_storage.dart';
 
 final storage = GetStorage();
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,

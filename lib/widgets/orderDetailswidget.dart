@@ -5,6 +5,7 @@ import 'package:unavu_villa_project/core/app_colors.dart';
 import 'package:unavu_villa_project/core/app_icon.dart';
 import 'package:unavu_villa_project/core/appdimention.dart';
 import 'package:unavu_villa_project/models/getMenuItem.dart';
+import 'package:unavu_villa_project/models/takeOrderModel.dart';
 import 'package:unavu_villa_project/viewmodels/dashboardController.dart';
 import 'package:unavu_villa_project/viewmodels/menuController.dart';
 import 'package:unavu_villa_project/widgets/userInformation.dart';
@@ -87,16 +88,29 @@ class OrderDetailsWidget extends StatelessWidget {
                   Divider(),
 
                   // Pricing Details
-                  Obx(() => totalRow(
-                      title: 'Total Amount',
-                      value:
-                          '\₹.${menuController.subTotal.toStringAsFixed(2)}')),
+                  Obx(() {
+                    double itemGrand = Controller.addItemcheck.value
+                        ? Controller.nvoicePay.value.totalAmount
+                        : 0.0;
+                    double actualTotal = menuController.subTotal;
+                    double grandTotal = itemGrand + actualTotal;
+                    return totalRow(
+                        title: 'Total Amount',
+                        value: '\₹.${grandTotal.toStringAsFixed(2)}');
+                  }),
                   SizedBox(
                     height: 4,
                   ),
-                  Obx(() => totalRow(
-                      title: 'Tax (10%)',
-                      value: '\₹.${menuController.tax.toStringAsFixed(2)}')),
+                  Obx(() {
+                    double itemGrand = Controller.addItemcheck.value
+                        ? Controller.nvoicePay.value.tax
+                        : 0.0;
+                    double actualTotal = menuController.tax;
+                    double grandTotal = itemGrand + actualTotal;
+                    return totalRow(
+                        title: 'Tax (10%)',
+                        value: '\₹.${grandTotal.toStringAsFixed(2)}');
+                  }),
                   SizedBox(
                     height: 4,
                   ),
@@ -157,17 +171,31 @@ class OrderDetailsWidget extends StatelessWidget {
                   SizedBox(
                     height: 4,
                   ), // Placeholder for discount
-                  Obx(() => totalRow(
-                      title: 'Round off',
-                      value: '\₹.${menuController.roundOff.toStringAsFixed(2)}',
-                      isHighlighted: true)),
+                  Obx(() {
+                    double itemGrand = Controller.addItemcheck.value
+                        ? Controller.nvoicePay.value.roundOff
+                        : 0.0;
+                    double actualTotal = menuController.roundOff;
+                    double grandTotal = itemGrand + actualTotal;
+                    return totalRow(
+                        title: 'Round off',
+                        value: '\₹.${grandTotal.toStringAsFixed(2)}',
+                        isHighlighted: true);
+                  }),
                   SizedBox(
                     height: 4,
                   ),
-                  Obx(() => totalRow(
-                      title: 'Grand Total',
-                      value: '\₹.${menuController.total.toStringAsFixed(2)}',
-                      isTotal: true)),
+                  Obx(() {
+                    double itemGrand = Controller.addItemcheck.value
+                        ? Controller.nvoicePay.value.grandTotal
+                        : 0.0;
+                    double actualTotal = menuController.total;
+                    double grandTotal = itemGrand + actualTotal;
+                    return totalRow(
+                        title: 'Grand Total',
+                        value: '\₹.${grandTotal.toStringAsFixed(2)}',
+                        isTotal: true);
+                  }),
                   SizedBox(
                     height: 21,
                   ),
@@ -177,7 +205,78 @@ class OrderDetailsWidget extends StatelessWidget {
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         onPressed: () {
-                          menuController.takeOrderNow();
+                          if (Controller.addItemcheck.value) {
+                            // Create a list to hold order items
+                            List<OrderItemModel> orderItem = [];
+
+                            // Populate the orderItem list from cartItems
+                            for (var cartItem in menuController.cartItems) {
+                              orderItem.add(OrderItemModel(
+                                itemcode: cartItem.id,
+                                itemname: cartItem.itemname,
+                                quantity:
+                                    menuController.itemQuantities[cartItem] ??
+                                        1,
+                                price: double.tryParse(cartItem.price) ??
+                                    0.0, // Use tryParse
+                                total: (double.tryParse(cartItem.price) ??
+                                        0.0) *
+                                    (menuController.itemQuantities[cartItem] ??
+                                        1),
+                                comp: cartItem.isChecked.value == false
+                                    ? false
+                                    : true,
+                                isDeleted: false,
+                                status: 0,
+                                statustime: 0,
+                                tax_type: cartItem.dineintax,
+                              ));
+                            }
+
+                            // Create the order request using values from the controllers
+                            // Create the order request using values from the controllers
+                            OrderModel orderRequest = OrderModel(
+                              address: Controller.nvoicePay.value.address,
+                              ordertype: Controller.nvoicePay.value.orderType,
+                              status: Controller.nvoicePay.value.orderType,
+                              tableid: Controller.nvoicePay.value.tableId ??
+                                  0, // Use tryParse
+                              numberofpeople: Controller.nvoicePay.value
+                                  .numberOfPeople, // Ensure this is a String
+                              captainname:
+                                  Controller.nvoicePay.value.numberOfPeople,
+                              waitername:
+                                  Controller.nvoicePay.value.numberOfPeople,
+                              customername:
+                                  Controller.nvoicePay.value.captainName,
+                              customermobile:
+                                  Controller.nvoicePay.value.numberOfPeople,
+                              email: Controller.nvoicePay.value
+                                  .email, // You can also use a controller for this
+                              location: Controller.nvoicePay.value.location,
+                              customerGSTIN:
+                                  Controller.nvoicePay.value.customerGSTIN,
+                              knotes: menuController.orderNote.value,
+                              items: orderItem,
+                              orderBy: Controller
+                                  .nvoicePay.value.orderBy, // Use .value
+                              paymentMethod: 0,
+                              branchid: Controller.nvoicePay.value.branchId,
+                              discountamount: menuController
+                                  .discountAmountall, // Use .value
+                              floorid: Controller.nvoicePay.value.floorId,
+                              grandtotal: menuController.total, // Use .value
+                              printerid: Controller.nvoicePay.value.printerId,
+                              totalamount:
+                                  menuController.subTotal, // Use .value
+                            );
+
+                            // Call the createOrder method
+                            menuController.createOrder(orderRequest);
+                            menuController.takeOrderNow(false);
+                          } else {
+                            menuController.takeOrderNow(true);
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.orange,

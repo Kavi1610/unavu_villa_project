@@ -217,14 +217,31 @@ class OrderCard extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           controller.onAdditemSelected(true);
-                          // InvoicePay payBill = InvoicePay(
-                          //   totalAmount: subTotal(),
-                          //   discountAmount: order.discountamount,
-                          //   grandTotal: order.totalamount,
-                          //   roundOff: roundOff(order.discountamount),
-                          //   tax: tax(),
-                          // );
-                          // controller.addItemBill(payBill);
+                          InvoicePay payBill = InvoicePay(
+                              totalAmount: subTotal(),
+                              discountAmount: order.discountamount,
+                              grandTotal: order.totalamount,
+                              roundOff: roundOffGet(order.discountamount),
+                              tax: getTax(),
+                              address: order.address ?? '',
+                              branchId: order.branchid ?? 0,
+                              captainName: order.captainname ?? '',
+                              customerGSTIN: order.customerGSTIN ?? '',
+                              customerMobile: order.customemobile ?? '',
+                              customerName: order.customername ?? '',
+                              email: order.email ?? '',
+                              floorId: order.floorid ?? 0,
+                              location: order.location ?? '',
+                              notes: order.knotes ?? '',
+                              numberOfPeople: order.numberofpeople ?? '',
+                              orderBy: order.orderBy ?? 0,
+                              orderType: order.ordertype ?? 0,
+                              waiterName: order.waitername ?? '',
+                              printerId: order.printerid ?? 0,
+                              status: order.status ?? 0,
+                              order: order.id ?? 0,
+                              tableId: order.tableid ?? 0);
+                          controller.addItemBill(payBill);
                           Get.toNamed('/addorder');
                         },
                         child: Container(
@@ -413,7 +430,7 @@ class OrderCard extends StatelessWidget {
     );
   }
 
-  double tax() {
+  double getTax() {
     return order.items!.fold(0.0, (sum, item) {
       //if (item.isChecked.value) return sum; // ✅ Skip unchecked items
 
@@ -432,10 +449,8 @@ class OrderCard extends StatelessWidget {
         }
 
         // Safely parse item.price
-        double itemPrice = double.tryParse(item.price) ??
-            0.0; // Default to 0.0 if parsing fails
-        int quantity =
-            int.parse(item.quantity) ?? 1; // Default to 1 if not found
+        double itemPrice = item.price ?? 0.0; // Default to 0.0 if parsing fails
+        int quantity = item.quantity ?? 1; // Default to 1 if not found
 
         // Calculate the tax based on the extracted rate and item price
         double itemTax = itemPrice * (taxRate / 100) * quantity;
@@ -454,16 +469,15 @@ class OrderCard extends StatelessWidget {
       //if (item.isChecked.value) return sum; // ✅ Skip unchecked items
 
       // Ensure item.price is a valid number
-      double itemPrice =
-          double.tryParse(item.price) ?? 0.0; // Default to 0.0 if parsing fails
-      int quantity = int.parse(item.quantity) ?? 1; // Default to 1 if not found
+      double itemPrice = item.price ?? 0.0; // Default to 0.0 if parsing fails
+      int quantity = item.quantity ?? 1; // Default to 1 if not found
 
       return sum + (itemPrice * quantity);
     });
   }
 
-  double roundOff(double disValue) {
-    return (subTotal() + tax() - disValue) -
-        (subTotal() + tax() - disValue).floor();
+  double roundOffGet(double disValue) {
+    return (subTotal() + getTax() - disValue) -
+        (subTotal() + getTax() - disValue).floor();
   }
 }

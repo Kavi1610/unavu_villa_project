@@ -76,6 +76,7 @@ class DashboardView extends StatelessWidget {
                                 SizedBox(width: 10), // Adjust spacing
                                 InkWell(
                                   onTap: () {
+                                    controller.onAdditemSelected(false);
                                     buttonController.makebuttontrue();
                                     Get.toNamed('/addorder');
                                   },
